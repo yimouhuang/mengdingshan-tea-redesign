@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>参观指南 | 蒙顶山茶文化数字博物馆</title>
+    <meta name="description" content="蒙顶山茶文化数字博物馆参观指南，展厅导航、路线推荐和常见问题">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body data-page="visit">
+
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon"><i class="fas fa-landmark"></i></span>
+                <span>蒙顶山茶文化数字博物馆</span>
+            </a>
+            <button class="menu-toggle" aria-label="菜单">
+                <span></span><span></span><span></span>
+            </button>
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="index.html" data-i18n="nav.home">入口大厅</a></li>
+                    <li><a href="history.html" data-i18n="nav.history">历史展厅</a></li>
+                    <li><a href="collection.html" data-i18n="nav.collection">藏品展厅</a></li>
+                    <li><a href="craft.html" data-i18n="nav.craft">工艺展厅</a></li>
+                    <li><a href="visit.html" data-i18n="nav.visit" class="active">参观指南</a></li>
+                    <li class="lang-switch">
+                        <button class="lang-btn" data-lang="zh" onclick="switchLanguage('zh')">中</button>
+                        <button class="lang-btn" data-lang="en" onclick="switchLanguage('en')">EN</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== BANNER ===== -->
+    <section class="page-banner">
+        <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1600&q=80" alt="参观指南"
+             class="banner-bg">
+        <div class="banner-overlay"></div>
+        <div class="banner-content">
+            <h1 data-i18n="visit.banner_title">参观指南</h1>
+            <p data-i18n="visit.banner_sub">规划您的博物馆之旅</p>
+        </div>
+    </section>
+
+    <!-- ===== VISIT GUIDE ===== -->
+    <section class="visit-page immersive-section">
+        <div class="container">
+            <div class="visit-guide-grid">
+                <!-- Route -->
+                <div class="visit-route animate-on-scroll">
+                    <h3 data-i18n="visit.route_title">推荐参观路线</h3>
+                    <p data-i18n="visit.route_desc">为了获得最佳的参观体验，建议您按照以下顺序参观：</p>
+                    <ul class="route-steps">
+                        <li>
+                            <span class="route-step-num">1</span>
+                            <span data-i18n="visit.route_steps.0">入口大厅 → 了解博物馆概览</span>
+                        </li>
+                        <li>
+                            <span class="route-step-num">2</span>
+                            <span data-i18n="visit.route_steps.1">历史展厅 → 追溯两千年的茶史</span>
+                        </li>
+                        <li>
+                            <span class="route-step-num">3</span>
+                            <span data-i18n="visit.route_steps.2">藏品展厅 → 品鉴各类茶中珍品</span>
+                        </li>
+                        <li>
+                            <span class="route-step-num">4</span>
+                            <span data-i18n="visit.route_steps.3">工艺展厅 → 探索制茶工艺流程</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Quick links -->
+                <div class="visit-route animate-on-scroll">
+                    <h3 data-i18n="visit.guide_title">展厅导航</h3>
+                    <p>点击下方按钮直接前往各展厅：</p>
+                    <div style="display:flex;flex-direction:column;gap:12px;margin-top:20px;">
+                        <a href="history.html" class="btn btn-outline" style="text-align:center;"><i class="fas fa-scroll"></i> 历史展厅</a>
+                        <a href="collection.html" class="btn btn-outline" style="text-align:center;"><i class="fas fa-gem"></i> 藏品展厅</a>
+                        <a href="craft.html" class="btn btn-outline" style="text-align:center;"><i class="fas fa-hand-sparkles"></i> 工艺展厅</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ -->
+            <div class="faq-section">
+                <h3 class="animate-on-scroll" data-i18n="visit.faq_title">常见问题</h3>
+                <div class="section-divider"></div>
+
+                <div class="faq-list">
+                    <div class="faq-item animate-on-scroll">
+                        <div class="faq-question">
+                            <span data-i18n="visit.faq.0.q">这个博物馆是免费开放的吗？</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer" data-i18n="visit.faq.0.a">是的，蒙顶山茶文化数字博物馆完全免费开放，所有展厅内容均可自由浏览。</div>
+                    </div>
+                    <div class="faq-item animate-on-scroll">
+                        <div class="faq-question">
+                            <span data-i18n="visit.faq.1.q">我可以在手机上参观吗？</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer" data-i18n="visit.faq.1.a">可以！博物馆采用响应式设计，完美适配电脑、平板和手机等各种设备。</div>
+                    </div>
+                    <div class="faq-item animate-on-scroll">
+                        <div class="faq-question">
+                            <span data-i18n="visit.faq.2.q">博物馆内容会更新吗？</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer" data-i18n="visit.faq.2.a">会的！我们会定期更新展览内容，增加新的藏品展示和文化文章，敬请关注。</div>
+                    </div>
+                    <div class="faq-item animate-on-scroll">
+                        <div class="faq-question">
+                            <span data-i18n="visit.faq.3.q">如何联系博物馆管理方？</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer" data-i18n="visit.faq.3.a">您可以通过下方的联系表单给我们留言，我们会及时回复您的问题。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEEDBACK FORM ===== -->
+    <section class="visit-form-section">
+        <div class="container">
+            <div class="visit-form-wrapper">
+                <h3 class="animate-on-scroll" data-i18n="visit.form_title">留言反馈</h3>
+
+                <div class="contact-form media-feedback-form animate-on-scroll">
+                    <form id="visitForm" novalidate>
+                        <div class="form-content">
+                            <div class="form-group">
+                                <label for="formName" data-i18n="visit.form_name">您的姓名</label>
+                                <input type="text" id="formName" name="name" placeholder="请输入姓名" required>
+                                <span class="error-msg" data-i18n="visit.form_required">此字段为必填项</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="formEmail" data-i18n="visit.form_email">电子邮箱</label>
+                                <input type="email" id="formEmail" name="email" placeholder="请输入邮箱">
+                                <span class="error-msg" data-i18n="visit.form_invalid_email">请输入有效的邮箱地址</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="formMessage" data-i18n="visit.form_message">留言内容</label>
+                                <textarea id="formMessage" name="message" placeholder="请输入留言内容"></textarea>
+                                <span class="error-msg" data-i18n="visit.form_required">此字段为必填项</span>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width:100%;"
+                                    data-i18n="visit.form_submit">发送留言</button>
+                        </div>
+                        <div class="form-success">
+                            <i class="fas fa-check-circle"></i>
+                            <h3 data-i18n="visit.form_success_title">感谢您的留言！</h3>
+                            <p data-i18n="visit.form_success_msg">我们会尽快回复您。</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3><i class="fas fa-landmark" style="color:var(--color-secondary);margin-right:8px;"></i>蒙顶山茶文化数字博物馆</h3>
+                    <p data-i18n="footer.brand_desc">蒙顶山茶文化数字博物馆 — 穿越两千年的茶文化之旅，从一片叶子读懂中华文明。</p>
+                </div>
+                <div>
+                    <h4 data-i18n="footer.quick_links">快速导航</h4>
+                    <ul class="footer-links">
+                        <li><a href="history.html" data-i18n="nav.history">历史展厅</a></li>
+                        <li><a href="collection.html" data-i18n="nav.collection">藏品展厅</a></li>
+                        <li><a href="craft.html" data-i18n="nav.craft">工艺展厅</a></li>
+                        <li><a href="visit.html" data-i18n="nav.visit">参观指南</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 data-i18n="footer.contact_us">联系方式</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-envelope"></i> <span>info@mengdingshan-tea.com</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>蒙顶山茶</h4>
+                    <p style="font-size:0.85rem;color:rgba(245,240,232,0.6);line-height:1.8;">世界茶文化发源地<br>千年贡茶 · 传承经典</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">© 2025 蒙顶山茶文化数字博物馆</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./js/main.js"></script>
+    <script src="./js/visit.js"></script>
+</body>
+</html>

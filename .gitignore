@@ -1,0 +1,38 @@
+# Dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# Next.js build output
+/.next/
+/out/
+
+# Local environment files (keep the safe template committed)
+.env*
+!.env.example
+
+# Vercel project metadata
+/.vercel/
+
+# Media is delivered directly from Alibaba Cloud OSS in deployed environments.
+# Keep the local copies for offline development and media integrity tests.
+/public/media/
+
+# Internal planning, rollback, and visual-review artifacts stay local.
+/.superpowers/
+/docs/superpowers/
+
+# TypeScript incremental build data
+*.tsbuildinfo
+
+# Local Codex browser profiles and visual verification artifacts
+/.codex-*/
+/.codex-screenshots/
+
+# Operating system and diagnostic files
+.DS_Store
+Thumbs.db
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

@@ -1,0 +1,132 @@
+{
+  "nav": {
+    "home": "Entrance",
+    "history": "History Hall",
+    "collection": "Collection Hall",
+    "craft": "Craftsmanship",
+    "visit": "Visit Guide"
+  },
+  "hero": {
+    "title": "Mengding Mountain",
+    "tagline": "Digital Tea Museum",
+    "subtitle": "A 2,000-year journey through tea culture — discover Chinese civilization through a single leaf.",
+    "cta": "Start Tour",
+    "scroll": "Explore More"
+  },
+  "home": {
+    "welcome_title": "Welcome to the Mengding Tea Digital Museum",
+    "welcome_desc": "Mengding Mountain, the birthplace of world tea culture. For over two thousand years since the Western Han Dynasty, this land has nurtured the oldest tea culture heritage. Here, you will journey through history, experience the millennium charm of tea, and explore the magical transformation from a green leaf to a fragrant cup.",
+    "featured_title": "Featured Exhibit",
+    "featured_name": "Mengding Ganlu",
+    "featured_desc": "One of China's oldest famous teas, originating from the Western Han Dynasty. Tightly curled with silvery tips, jade-green liquor, fresh and sweet taste — known as 'Nectar from Heaven'.",
+    "halls_title": "Exhibition Halls",
+    "halls": [
+      { "title": "History Hall", "desc": "Trace 2,000 years of tea history, from tea ancestor Wu Lizhen to modern heritage" },
+      { "title": "Collection Hall", "desc": "Appreciate fine tea varieties and traditional tea wares" },
+      { "title": "Craftsmanship Hall", "desc": "Explore the secrets of tea making and national intangible heritage" },
+      { "title": "Visit Guide", "desc": "Plan your museum tour with visitor information and tips" }
+    ]
+  },
+  "history": {
+    "banner_title": "History Hall",
+    "banner_sub": "A 2,000-Year Journey Through Tea History",
+    "intro_title": "The River of Tea History",
+    "intro_p1": "The history of Mengding tea is a condensed history of Chinese tea culture. From 53 BC, when tea ancestor Wu Lizhen planted the first tea trees among the five peaks of Mengding Mountain, this land has been inseparable from tea.",
+    "intro_p2": "Through the Western and Eastern Han, Three Kingdoms, and Southern and Northern Dynasties, tea cultivation techniques on Mengding Mountain continued to improve. By the Tang Dynasty (742 AD), Mengding tea was designated as imperial tribute tea, beginning a thousand-year legacy.",
+    "intro_p3": "Tea culture flourished during the Song Dynasty, and Mengding tea was highly regarded by scholars and literati. During the Ming and Qing dynasties, tea-making techniques further developed. Today, the traditional craftsmanship of Mengding tea is recognized as National Intangible Cultural Heritage.",
+    "timeline_title": "Historical Timeline",
+    "timeline": [
+      { "year": "53 BC", "title": "Tea Planted", "desc": "Tea ancestor Wu Lizhen began cultivating tea trees on Mengding Mountain, pioneering artificial tea cultivation worldwide" },
+      { "year": "53 BC—581 AD", "title": "Tradition Passed Down", "desc": "Through Han, Three Kingdoms, and Southern/Northern Dynasties, tea cultivation techniques were passed down and refined" },
+      { "year": "742 AD", "title": "Tribute Tea", "desc": "Mengding tea was designated as imperial tribute tea by Emperor Xuanzong of Tang, beginning a millennium of tribute" },
+      { "year": "960—1279", "title": "Song Elegance", "desc": "Tea culture flourished; Mengding tea became highly prized among scholars and poets" },
+      { "year": "1915", "title": "Panama Gold Medal", "desc": "Mengding tea won the Gold Medal at the Panama-Pacific International Exposition" },
+      { "year": "2020", "title": "Intangible Heritage", "desc": "Traditional Mengding tea craftsmanship was inscribed on the National Intangible Cultural Heritage list" }
+    ],
+    "figures_title": "Historical Figures",
+    "figures": [
+      { "name": "Wu Lizhen", "title": "Tea Ancestor · Western Han", "desc": "First cultivated tea trees on Mengding Mountain in 53 BC, honored as the 'Tea Ancestor' who pioneered artificial tea cultivation worldwide." },
+      { "name": "Bai Juyi", "title": "Tang Dynasty Poet", "desc": "Great poet of the Tang Dynasty who praised Mengding tea in his poetry: 'Only clear waters in music, only Meng tea among teas'." },
+      { "name": "Lu Yu", "title": "Tea Sage · Tang Dynasty", "desc": "Authored 'The Classic of Tea' (Cha Jing), which repeatedly praises Mengding tea as among the finest, contributing greatly to its fame." }
+    ]
+  },
+  "collection": {
+    "banner_title": "Collection Hall",
+    "banner_sub": "Treasures of Tea Culture",
+    "exhibits_tab": "Tea Exhibits",
+    "tools_tab": "Tea Tools",
+    "all": "All Exhibits",
+    "categories": {
+      "green": "Green Tea",
+      "yellow": "Yellow Tea",
+      "flower": "Flower Tea",
+      "black": "Black Tea"
+    },
+    "list": [
+      { "name": "Mengding Ganlu", "category": "green", "era": "Western Han — Present", "origin": "Mengding Mountain 1200m+", "desc": "Curled green tea with silvery tips, jade-green liquor, fresh and sweet taste", "detail": "Mengding Ganlu is one of China's oldest famous teas, dating back to the Western Han Dynasty. Its tightly curled shape with abundant downy tips presents a glossy jade-green color. The aroma is rich and fresh, the liquor clear with a slight yellow tint, and the taste is brisk with a lasting sweet aftertaste." },
+      { "name": "Mengding Huangya", "category": "yellow", "era": "Tang — Present", "origin": "Mengding high mountain gardens", "desc": "A treasure among yellow teas, tender buds, bright yellow liquor, sweet and mellow", "detail": "Mengding Huangya represents the finest of Chinese yellow tea. Its flat and straight shape with a slight yellow hue reveals tender buds. The liquor is bright yellow with a sweet fragrance, the taste mellow and fresh. The unique yellowing process is key to its distinctive character." },
+      { "name": "Mengding Shihua", "category": "green", "era": "Song — Present", "origin": "Mengding core production area", "desc": "Flat green tea shaped like petals, delicate aroma, lingering finish", "detail": "Mengding Shihua has a flat, smooth shape resembling flower petals with an emerald-green color. When brewed, the liquor is clear and bright with a lasting delicate aroma. Its name derives from its appearance, which resembles flowers blooming among mountain rocks." },
+      { "name": "Mengding Jasmine", "category": "flower", "era": "Qing — Present", "origin": "Mengding tea region", "desc": "Scented with jasmine, rich floral aroma, brisk tea taste, refreshing", "detail": "Made from high-quality Mengding green tea and fine jasmine blossoms picked in midsummer, undergoing multiple scentings. It combines the brisk character of Mengding green tea with the rich fragrance of jasmine." },
+      { "name": "Mengding Jin Jun Mei", "category": "black", "era": "Modern", "origin": "Mengding high mountain area", "desc": "Premium black tea, honey fragrance, bright red liquor, full-bodied taste", "detail": "Made from tender buds of high-mountain tea gardens, processed through withering, rolling, fermentation, and drying. Features a honey fragrance with fruity and floral notes, bright red liquor, and a full-bodied sweet taste." },
+      { "name": "Mengding Maofeng", "category": "green", "era": "Ming — Present", "origin": "Mengding tea region", "desc": "Tightly twisted strands, white tips visible, clear liquor, fresh and mellow", "detail": "A premium green tea with tightly twisted uniform strands, prominent white downy tips, and emerald-green color. The aroma is high and lasting, the liquor clear and bright, the taste fresh and mellow with a sweet aftertaste." }
+    ],
+    "tools": [
+      { "name": "Bamboo Tea Sieve", "era": "Traditional Tool", "desc": "Hand-woven bamboo tool for grading and sifting tea leaves, embodying traditional tea-making wisdom" },
+      { "name": "Iron Fixation Pan", "era": "Traditional Tool", "desc": "Iron pan used for the fixation process, where high heat deactivates enzymes in fresh tea leaves" },
+      { "name": "Bamboo Roasting Basket", "era": "Traditional Tool", "desc": "Traditional bamboo basket for roasting and shaping tea leaves, ensuring thorough drying" },
+      { "name": "Zisha Teapot", "era": "Traditional Tea Ware", "desc": "Yixing purple clay teapot, ideal for brewing tea, fully releasing the aroma and flavor of tea leaves" }
+    ]
+  },
+  "craft": {
+    "banner_title": "Craftsmanship Hall",
+    "banner_sub": "The Art of Tea Making · Intangible Heritage",
+    "intro_title": "Traditional Mengding Tea Craftsmanship",
+    "intro_desc": "In 2020, the traditional craftsmanship of Mengding tea was inscribed on China's National Intangible Cultural Heritage list. This craft, passed down for over two thousand years, embodies the wisdom and dedication of countless tea artisans.",
+    "steps_title": "Tea Making Process",
+    "steps": [
+      { "step": "01", "title": "Leaf Picking", "desc": "On fine weather days, hand-pick tender tea buds with one leaf and one bud, ensuring uniformity and freedom from pests." },
+      { "step": "02", "title": "Withering", "desc": "Spread fresh leaves thinly on bamboo trays in a cool, ventilated area to allow moderate moisture loss, softening the leaves for subsequent processing." },
+      { "step": "03", "title": "Fixation", "desc": "Quickly stir-fry leaves in a high-temperature iron pan to deactivate oxidizing enzymes, preserving the green color and releasing tea aroma." },
+      { "step": "04", "title": "Rolling & Roasting", "desc": "Alternate rolling and roasting to break leaf cells, release juices, shape the leaves tightly, and promote internal transformation." },
+      { "step": "05", "title": "Shaping & Drying", "desc": "Shape the tea and dry slowly at low temperature to reduce moisture below 5%, fixing quality for long-term preservation." },
+      { "step": "06", "title": "Sorting & Packing", "desc": "Fine-sort the finished tea, remove impurities and dust, grade by quality, and package to ensure the quality of every cup." }
+    ],
+    "heritage_title": "Intangible Heritage Bearers",
+    "heritage_desc": "The legacy of traditional Mengding tea craftsmanship is carried forward by generations of tea artisans who have dedicated their lives to preserving and innovating this precious cultural heritage."
+  },
+  "visit": {
+    "banner_title": "Visit Guide",
+    "banner_sub": "Plan Your Museum Tour",
+    "guide_title": "Hall Navigation",
+    "route_title": "Recommended Route",
+    "route_desc": "For the best experience, we recommend visiting in this order:",
+    "route_steps": [
+      "Entrance Hall → Museum overview",
+      "History Hall → 2,000 years of tea history",
+      "Collection Hall → Fine tea treasures",
+      "Craftsmanship Hall → The art of tea making"
+    ],
+    "faq_title": "Frequently Asked Questions",
+    "faq": [
+      { "q": "Is this museum free?", "a": "Yes! The Mengding Tea Digital Museum is completely free and open to all visitors." },
+      { "q": "Can I visit on my phone?", "a": "Absolutely! The museum uses responsive design, perfect for computers, tablets, and mobile phones." },
+      { "q": "Will the content be updated?", "a": "Yes! We regularly update our exhibitions with new collections and cultural articles. Stay tuned!" },
+      { "q": "How can I contact the museum?", "a": "You can reach us through the feedback form below. We will respond to your inquiry promptly." }
+    ],
+    "form_title": "Feedback",
+    "form_name": "Your Name",
+    "form_email": "Email Address",
+    "form_message": "Your Message",
+    "form_submit": "Send Message",
+    "form_required": "This field is required",
+    "form_invalid_email": "Please enter a valid email address",
+    "form_success_title": "Thank You!",
+    "form_success_msg": "We will get back to you soon."
+  },
+  "footer": {
+    "brand_desc": "Mengding Tea Digital Museum — A 2,000-year journey through tea culture, discovering Chinese civilization through a single leaf.",
+    "quick_links": "Quick Links",
+    "contact_us": "Contact",
+    "copyright": "© 2025 Mengding Tea Digital Museum. All rights reserved."
+  }
+}

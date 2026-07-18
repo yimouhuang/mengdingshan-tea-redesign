@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工艺展厅 | 蒙顶山茶文化数字博物馆</title>
+    <meta name="description" content="探索蒙顶山茶传统制作技艺，领略国家级非物质文化遗产的魅力">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body data-page="craft">
+
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon"><i class="fas fa-landmark"></i></span>
+                <span>蒙顶山茶文化数字博物馆</span>
+            </a>
+            <button class="menu-toggle" aria-label="菜单">
+                <span></span><span></span><span></span>
+            </button>
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="index.html" data-i18n="nav.home">入口大厅</a></li>
+                    <li><a href="history.html" data-i18n="nav.history">历史展厅</a></li>
+                    <li><a href="collection.html" data-i18n="nav.collection">藏品展厅</a></li>
+                    <li><a href="craft.html" data-i18n="nav.craft" class="active">工艺展厅</a></li>
+                    <li><a href="visit.html" data-i18n="nav.visit">参观指南</a></li>
+                    <li class="lang-switch">
+                        <button class="lang-btn" data-lang="zh" onclick="switchLanguage('zh')">中</button>
+                        <button class="lang-btn" data-lang="en" onclick="switchLanguage('en')">EN</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== BANNER ===== -->
+    <section class="page-banner">
+        <img src="https://images.unsplash.com/photo-1558160074-4d7d8bdf4256?w=1600&q=80" alt="制茶工艺"
+             class="banner-bg">
+        <div class="banner-overlay"></div>
+        <div class="banner-content">
+            <h1 data-i18n="craft.banner_title">工艺展厅</h1>
+            <p data-i18n="craft.banner_sub">探索制茶奥秘 · 领略非遗魅力</p>
+        </div>
+    </section>
+
+    <!-- ===== INTRO ===== -->
+    <section class="craft-intro immersive-section">
+        <div class="container">
+            <div class="craft-intro-content animate-on-scroll">
+                <h2 data-i18n="craft.intro_title">蒙顶山茶传统制作技艺</h2>
+                <div class="section-divider" style="margin:15px auto 30px;"></div>
+                <p data-i18n="craft.intro_desc">蒙顶山茶传统制作技艺于2020年入选国家级非物质文化遗产代表性项目名录。这套技艺历经两千余年传承，凝聚了无数制茶匠人的智慧和心血。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CRAFT STEPS ===== -->
+    <section class="craft-steps-section immersive-section">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll" data-i18n="craft.steps_title">制茶工艺流程</h2>
+            <div class="section-divider"></div>
+
+            <div class="craft-steps">
+                <div class="craft-step-card animate-on-scroll">
+                    <div class="media-frame craft-step-media">
+                        <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=900&q=80" alt="Fresh tea leaves ready for hand picking">
+                    </div>
+                    <div class="craft-step-number" data-i18n="craft.steps.0.step">01</div>
+                    <h4 data-i18n="craft.steps.0.title">鲜叶采摘</h4>
+                    <p data-i18n="craft.steps.0.desc">选择晴好天气，手工采摘一芽一叶或一芽二叶初展的鲜嫩茶芽，要求芽叶匀整、无病虫害。</p>
+                </div>
+                <div class="craft-step-card animate-on-scroll">
+                    <div class="media-frame craft-step-media">
+                        <img src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=900&q=80" alt="Tea leaves spread out for withering">
+                    </div>
+                    <div class="craft-step-number" data-i18n="craft.steps.1.step">02</div>
+                    <h4 data-i18n="craft.steps.1.title">摊放萎凋</h4>
+                    <p data-i18n="craft.steps.1.desc">将鲜叶薄摊于竹筛上，置于阴凉通风处，使水分适度散失，叶片柔软，为后续工序做准备。</p>
+                </div>
+                <div class="craft-step-card animate-on-scroll">
+                    <div class="media-frame craft-step-media">
+                        <img src="https://images.unsplash.com/photo-1558160074-4d7d8bdf4256?w=900&q=80" alt="Tea leaves heated during fixation">
+                    </div>
+                    <div class="craft-step-number" data-i18n="craft.steps.2.step">03</div>
+                    <h4 data-i18n="craft.steps.2.title">高温杀青</h4>
+                    <p data-i18n="craft.steps.2.desc">在高温铁锅中快速翻炒，破坏鲜叶中氧化酶的活性，使茶叶保持绿色，同时散发青草气，激发出茶香。</p>
+                </div>
+                <div class="craft-step-card animate-on-scroll">
+                    <div class="media-frame craft-step-media">
+                        <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=900&q=80" alt="Tea leaves shaped by hand during rolling">
+                    </div>
+                    <div class="craft-step-number" data-i18n="craft.steps.3.step">04</div>
+                    <h4 data-i18n="craft.steps.3.title">三揉三炒</h4>
+                    <p data-i18n="craft.steps.3.desc">反复进行揉捻和炒制，使茶叶细胞破碎、汁液溢出，塑造紧结的外形，促进内含物质转化。</p>
+                </div>
+                <div class="craft-step-card animate-on-scroll">
+                    <div class="media-frame craft-step-media">
+                        <img src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=900&q=80" alt="Dried tea leaves prepared for final firing">
+                    </div>
+                    <div class="craft-step-number" data-i18n="craft.steps.4.step">05</div>
+                    <h4 data-i18n="craft.steps.4.title">整形烘干</h4>
+                    <p data-i18n="craft.steps.4.desc">将茶叶整理成型后低温慢烘，使含水量降至5%以下，固定茶叶品质，便于长期保存。</p>
+                </div>
+                <div class="craft-step-card animate-on-scroll">
+                    <div class="media-frame craft-step-media">
+                        <img src="https://images.unsplash.com/photo-1558160074-4d7d8bdf4256?w=900&q=80" alt="Finished Mengding tea arranged for packaging">
+                    </div>
+                    <div class="craft-step-number" data-i18n="craft.steps.5.step">06</div>
+                    <h4 data-i18n="craft.steps.5.title">精选包装</h4>
+                    <p data-i18n="craft.steps.5.desc">对成品茶进行精细筛选分级，去除杂质和碎末，按照品质等级分别包装，确保每一杯茶的品质。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== HERITAGE ===== -->
+    <section class="craft-heritage">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll" data-i18n="craft.heritage_title">非遗传承人</h2>
+            <div class="section-divider"></div>
+
+            <div class="heritage-box animate-on-scroll">
+                <i class="fas fa-award"></i>
+                <p data-i18n="craft.heritage_desc">蒙顶山茶传统制作技艺的代代传承，离不开一代代制茶匠人的坚守与创新。他们用毕生心血守护着这份珍贵的文化遗产。</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3><i class="fas fa-landmark" style="color:var(--color-secondary);margin-right:8px;"></i>蒙顶山茶文化数字博物馆</h3>
+                    <p data-i18n="footer.brand_desc">蒙顶山茶文化数字博物馆 — 穿越两千年的茶文化之旅，从一片叶子读懂中华文明。</p>
+                </div>
+                <div>
+                    <h4 data-i18n="footer.quick_links">快速导航</h4>
+                    <ul class="footer-links">
+                        <li><a href="history.html" data-i18n="nav.history">历史展厅</a></li>
+                        <li><a href="collection.html" data-i18n="nav.collection">藏品展厅</a></li>
+                        <li><a href="craft.html" data-i18n="nav.craft">工艺展厅</a></li>
+                        <li><a href="visit.html" data-i18n="nav.visit">参观指南</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 data-i18n="footer.contact_us">联系方式</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-envelope"></i> <span>info@mengdingshan-tea.com</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>蒙顶山茶</h4>
+                    <p style="font-size:0.85rem;color:rgba(245,240,232,0.6);line-height:1.8;">世界茶文化发源地<br>千年贡茶 · 传承经典</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">© 2025 蒙顶山茶文化数字博物馆</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./js/main.js"></script>
+</body>
+</html>

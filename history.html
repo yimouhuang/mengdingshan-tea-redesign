@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>历史展厅 | 蒙顶山茶文化数字博物馆</title>
+    <meta name="description" content="追溯蒙顶山茶两千年的历史脉络，从茶祖吴理真到现代非遗传承">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body data-page="history">
+
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon"><i class="fas fa-landmark"></i></span>
+                <span>蒙顶山茶文化数字博物馆</span>
+            </a>
+            <button class="menu-toggle" aria-label="菜单">
+                <span></span><span></span><span></span>
+            </button>
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="index.html" data-i18n="nav.home">入口大厅</a></li>
+                    <li><a href="history.html" data-i18n="nav.history" class="active">历史展厅</a></li>
+                    <li><a href="collection.html" data-i18n="nav.collection">藏品展厅</a></li>
+                    <li><a href="craft.html" data-i18n="nav.craft">工艺展厅</a></li>
+                    <li><a href="visit.html" data-i18n="nav.visit">参观指南</a></li>
+                    <li class="lang-switch">
+                        <button class="lang-btn" data-lang="zh" onclick="switchLanguage('zh')">中</button>
+                        <button class="lang-btn" data-lang="en" onclick="switchLanguage('en')">EN</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== BANNER ===== -->
+    <section class="page-banner">
+        <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=1600&q=80" alt="蒙顶山历史"
+             class="banner-bg">
+        <div class="banner-overlay"></div>
+        <div class="banner-content">
+            <h1 data-i18n="history.banner_title">历史展厅</h1>
+            <p data-i18n="history.banner_sub">追溯两千年的茶史长河</p>
+        </div>
+    </section>
+
+    <!-- ===== INTRO ===== -->
+    <section class="history-intro immersive-section">
+        <div class="container">
+            <h2 class="animate-on-scroll" data-i18n="history.intro_title">茶史长河</h2>
+            <div class="section-divider" style="margin:15px auto 30px;"></div>
+            <p class="animate-on-scroll" data-i18n="history.intro_p1">蒙顶山茶的历史是一部浓缩的中国茶文化史。从公元前53年茶祖吴理真在蒙顶山五峰之间植下第一棵茶树开始，这片土地就与茶结下了不解之缘。</p>
+            <p class="animate-on-scroll" data-i18n="history.intro_p2">历经西汉、东汉、三国、两晋南北朝，蒙顶山茶的种植技艺不断完善。至唐代，蒙顶山茶被列为贡茶，岁岁入贡，开启了长达千年的贡茶历史。</p>
+            <p class="animate-on-scroll" data-i18n="history.intro_p3">宋代茶文化空前繁荣，蒙顶山茶备受文人雅士推崇。明清时期，制茶工艺进一步发展，蒙顶山茶声名远播。时至今日，蒙顶山茶传统制作技艺被列入国家级非物质文化遗产。</p>
+        </div>
+    </section>
+
+    <!-- ===== TIMELINE ===== -->
+    <section class="timeline-section immersive-section">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll" data-i18n="history.timeline_title">历史脉络</h2>
+            <div class="section-divider"></div>
+
+            <div class="timeline">
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-year" data-i18n="history.timeline.0.year">公元前53年</div>
+                    <div class="timeline-content">
+                        <h4 data-i18n="history.timeline.0.title">茶祖植茶</h4>
+                        <p data-i18n="history.timeline.0.desc">茶祖吴理真在蒙顶山五峰之间开始人工种植茶树，开创世界人工植茶先河</p>
+                    </div>
+                </div>
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-year" data-i18n="history.timeline.1.year">公元前53年—581年</div>
+                    <div class="timeline-content">
+                        <h4 data-i18n="history.timeline.1.title">技艺传承</h4>
+                        <p data-i18n="history.timeline.1.desc">历经汉、三国、两晋南北朝，蒙顶山茶种植技艺代代相传，不断发展</p>
+                    </div>
+                </div>
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-year" data-i18n="history.timeline.2.year">公元742年</div>
+                    <div class="timeline-content">
+                        <h4 data-i18n="history.timeline.2.title">列为贡茶</h4>
+                        <p data-i18n="history.timeline.2.desc">唐玄宗天宝元年，蒙顶山茶被列为贡茶，岁岁入贡，开启千年贡茶史</p>
+                    </div>
+                </div>
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-year" data-i18n="history.timeline.3.year">公元960—1279年</div>
+                    <div class="timeline-content">
+                        <h4 data-i18n="history.timeline.3.title">宋韵茶香</h4>
+                        <p data-i18n="history.timeline.3.desc">宋代茶文化繁荣，蒙顶山茶备受文人雅士推崇，成为茶中上品</p>
+                    </div>
+                </div>
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-year" data-i18n="history.timeline.4.year">1915年</div>
+                    <div class="timeline-content">
+                        <h4 data-i18n="history.timeline.4.title">巴拿马金奖</h4>
+                        <p data-i18n="history.timeline.4.desc">蒙顶山茶获巴拿马万国博览会金质奖章，享誉国际</p>
+                    </div>
+                </div>
+                <div class="timeline-item animate-on-scroll">
+                    <div class="timeline-year" data-i18n="history.timeline.5.year">2020年</div>
+                    <div class="timeline-content">
+                        <h4 data-i18n="history.timeline.5.title">非遗传承</h4>
+                        <p data-i18n="history.timeline.5.desc">蒙顶山茶传统制作技艺入选国家级非物质文化遗产名录</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== HISTORICAL FIGURES ===== -->
+    <section class="figures-section">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll" data-i18n="history.figures_title">历史人物</h2>
+            <div class="section-divider"></div>
+
+            <div class="figures-grid">
+                <div class="figure-card animate-on-scroll">
+                    <div class="figure-icon"><i class="fas fa-user"></i></div>
+                    <h4 data-i18n="history.figures.0.name">吴理真</h4>
+                    <div class="figure-title" data-i18n="history.figures.0.title">茶祖 · 西汉</div>
+                    <p data-i18n="history.figures.0.desc">西汉时期蒙顶山人，在蒙顶山五峰之间首次人工种植茶树，被尊为"茶祖"，开创了世界人工种茶的先河。</p>
+                </div>
+                <div class="figure-card animate-on-scroll">
+                    <div class="figure-icon"><i class="fas fa-feather-alt"></i></div>
+                    <h4 data-i18n="history.figures.1.name">白居易</h4>
+                    <div class="figure-title" data-i18n="history.figures.1.title">唐代诗人</div>
+                    <p data-i18n="history.figures.1.desc">唐代大诗人，曾写诗赞誉蒙顶山茶："琴里知闻唯渌水，茶中故旧是蒙山"，留下了千古名句。</p>
+                </div>
+                <div class="figure-card animate-on-scroll">
+                    <div class="figure-icon"><i class="fas fa-book"></i></div>
+                    <h4 data-i18n="history.figures.2.name">陆羽</h4>
+                    <div class="figure-title" data-i18n="history.figures.2.title">茶圣 · 唐代</div>
+                    <p data-i18n="history.figures.2.desc">所著《茶经》中多次提及蒙顶山茶，称其为茶中上品，为蒙顶山茶的推广做出了重要贡献。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3><i class="fas fa-landmark" style="color:var(--color-secondary);margin-right:8px;"></i>蒙顶山茶文化数字博物馆</h3>
+                    <p data-i18n="footer.brand_desc">蒙顶山茶文化数字博物馆 — 穿越两千年的茶文化之旅，从一片叶子读懂中华文明。</p>
+                </div>
+                <div>
+                    <h4 data-i18n="footer.quick_links">快速导航</h4>
+                    <ul class="footer-links">
+                        <li><a href="history.html" data-i18n="nav.history">历史展厅</a></li>
+                        <li><a href="collection.html" data-i18n="nav.collection">藏品展厅</a></li>
+                        <li><a href="craft.html" data-i18n="nav.craft">工艺展厅</a></li>
+                        <li><a href="visit.html" data-i18n="nav.visit">参观指南</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 data-i18n="footer.contact_us">联系方式</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-envelope"></i> <span>info@mengdingshan-tea.com</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>蒙顶山茶</h4>
+                    <p style="font-size:0.85rem;color:rgba(245,240,232,0.6);line-height:1.8;">世界茶文化发源地<br>千年贡茶 · 传承经典</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">© 2025 蒙顶山茶文化数字博物馆</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./js/main.js"></script>
+</body>
+</html>

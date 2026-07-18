@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蒙顶山茶文化数字博物馆</title>
+    <meta name="description" content="蒙顶山茶文化数字博物馆 — 穿越两千年的茶文化之旅">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body data-page="index">
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon"><i class="fas fa-landmark"></i></span>
+                <span>蒙顶山茶文化数字博物馆</span>
+            </a>
+
+            <button class="menu-toggle" aria-label="菜单">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="index.html" data-i18n="nav.home" class="active">入口大厅</a></li>
+                    <li><a href="history.html" data-i18n="nav.history">历史展厅</a></li>
+                    <li><a href="collection.html" data-i18n="nav.collection">藏品展厅</a></li>
+                    <li><a href="craft.html" data-i18n="nav.craft">工艺展厅</a></li>
+                    <li><a href="visit.html" data-i18n="nav.visit">参观指南</a></li>
+                    <li class="lang-switch">
+                        <button class="lang-btn" data-lang="zh" onclick="switchLanguage('zh')">中</button>
+                        <button class="lang-btn" data-lang="en" onclick="switchLanguage('en')">EN</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero hero-cinematic">
+        <video class="hero-video" autoplay muted loop playsinline
+               poster="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=1600&q=80">
+        </video>
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+            <p class="media-kicker">Mengding Tea Media Gallery</p>
+            <p class="hero-tagline" data-i18n="hero.tagline">数字博物馆</p>
+            <h1 data-i18n="hero.title">蒙顶山茶文化</h1>
+            <p data-i18n="hero.subtitle">穿越两千年的茶文化之旅，从一片叶子读懂中华文明</p>
+            <a href="history.html" class="btn btn-primary" data-i18n="hero.cta">开始参观</a>
+        </div>
+
+        <div class="hero-scroll-indicator">
+            <span data-i18n="hero.scroll">向下探索</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- ===== WELCOME INTRO ===== -->
+    <section class="museum-intro">
+        <div class="container">
+            <div class="museum-intro-content animate-on-scroll">
+                <h2 data-i18n="home.welcome_title">欢迎来到蒙顶山茶文化数字博物馆</h2>
+                <div class="section-divider" style="margin:15px auto 30px;"></div>
+                <p data-i18n="home.welcome_desc">蒙顶山，世界茶文化发源地。自西汉至今两千余年，这片土地孕育了最悠久的茶文化传承。在这里，您将穿越历史长河，感受千年茶韵，探索从一片绿叶到一盏香茗的神奇旅程。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURED MEDIA ===== -->
+    <section class="immersive-section home-media-showcase">
+        <div class="container">
+            <div class="section-heading-left animate-on-scroll">
+                <span class="chapter-label">Selected Media</span>
+                <h2 class="section-title">茶影精选</h2>
+            </div>
+
+            <div class="media-grid home-media-grid">
+                <a href="history.html" class="media-tile animate-on-scroll">
+                    <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=900&q=80" alt="历史展厅">
+                    <div class="media-tile-overlay"></div>
+                    <div class="media-tile-content">
+                        <span class="chapter-label">History</span>
+                        <h3 data-i18n="home.halls.0.title">历史展厅</h3>
+                        <p data-i18n="home.halls.0.desc">追溯两千年的茶史长河</p>
+                    </div>
+                </a>
+
+                <a href="collection.html" class="media-tile animate-on-scroll">
+                    <img src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=900&q=80" alt="藏品展厅">
+                    <div class="media-tile-overlay"></div>
+                    <div class="media-tile-content">
+                        <span class="chapter-label">Collection</span>
+                        <h3 data-i18n="home.halls.1.title">藏品展厅</h3>
+                        <p data-i18n="home.halls.1.desc">品鉴各类茶叶珍品，欣赏传统茶器文物</p>
+                    </div>
+                </a>
+
+                <a href="craft.html" class="media-tile animate-on-scroll">
+                    <img src="https://images.unsplash.com/photo-1558160074-4d7d8bdf4256?w=900&q=80" alt="工艺展厅">
+                    <div class="media-tile-overlay"></div>
+                    <div class="media-tile-content">
+                        <span class="chapter-label">Craft</span>
+                        <h3 data-i18n="home.halls.2.title">工艺展厅</h3>
+                        <p data-i18n="home.halls.2.desc">探索制茶奥秘，领略国家级非遗技艺</p>
+                    </div>
+                </a>
+
+                <a href="visit.html" class="media-tile animate-on-scroll">
+                    <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=900&q=80" alt="参观指南">
+                    <div class="media-tile-overlay"></div>
+                    <div class="media-tile-content">
+                        <span class="chapter-label">Visit</span>
+                        <h3 data-i18n="home.halls.3.title">参观指南</h3>
+                        <p data-i18n="home.halls.3.desc">获取参观信息，规划您的线上博物馆之旅</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURED EXHIBIT ===== -->
+    <section class="featured-section">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll" data-i18n="home.featured_title">镇馆之宝</h2>
+            <div class="section-divider"></div>
+
+            <div class="featured-display">
+                <div class="featured-image animate-on-scroll">
+                    <img src="./images/products/tea-1.jpg" alt="蒙顶甘露"
+                         onerror="this.src='https://via.placeholder.com/600x450/5B7B3A/FFFFFF?text=蒙顶甘露'">
+                    <span class="featured-badge"><i class="fas fa-crown"></i> 镇馆之宝</span>
+                </div>
+                <div class="featured-info animate-on-scroll">
+                    <h3>Featured Exhibit</h3>
+                    <h2 data-i18n="home.featured_name">蒙顶甘露</h2>
+                    <p data-i18n="home.featured_desc">中国最古老的名茶之一，始于西汉，外形紧卷多毫，汤色碧绿，滋味鲜爽回甘，被誉为"人间甘露"。</p>
+                    <a href="collection.html" class="btn btn-outline" style="margin-top:20px;">查看全部藏品</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== HALLS NAVIGATION ===== -->
+    <section class="halls-section">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll" data-i18n="home.halls_title">展厅导览</h2>
+            <div class="section-divider"></div>
+
+            <div class="halls-grid">
+                <a href="history.html" class="hall-card media-tile animate-on-scroll">
+                    <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80" alt="历史展厅" class="hall-bg">
+                    <div class="hall-overlay"></div>
+                    <div class="hall-icon"><i class="fas fa-scroll"></i></div>
+                    <div class="hall-content">
+                        <h4 data-i18n="home.halls.0.title">历史展厅</h4>
+                        <p data-i18n="home.halls.0.desc">追溯两千年的茶史长河</p>
+                    </div>
+                </a>
+
+                <a href="collection.html" class="hall-card media-tile animate-on-scroll">
+                    <img src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=400&q=80" alt="藏品展厅" class="hall-bg">
+                    <div class="hall-overlay"></div>
+                    <div class="hall-icon"><i class="fas fa-gem"></i></div>
+                    <div class="hall-content">
+                        <h4 data-i18n="home.halls.1.title">藏品展厅</h4>
+                        <p data-i18n="home.halls.1.desc">品鉴各类茶叶珍品，欣赏传统茶器文物</p>
+                    </div>
+                </a>
+
+                <a href="craft.html" class="hall-card media-tile animate-on-scroll">
+                    <img src="https://images.unsplash.com/photo-1558160074-4d7d8bdf4256?w=400&q=80" alt="工艺展厅" class="hall-bg">
+                    <div class="hall-overlay"></div>
+                    <div class="hall-icon"><i class="fas fa-hand-sparkles"></i></div>
+                    <div class="hall-content">
+                        <h4 data-i18n="home.halls.2.title">工艺展厅</h4>
+                        <p data-i18n="home.halls.2.desc">探索制茶奥秘，领略国家级非遗技艺</p>
+                    </div>
+                </a>
+
+                <a href="visit.html" class="hall-card media-tile animate-on-scroll">
+                    <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=400&q=80" alt="参观指南" class="hall-bg">
+                    <div class="hall-overlay"></div>
+                    <div class="hall-icon"><i class="fas fa-compass"></i></div>
+                    <div class="hall-content">
+                        <h4 data-i18n="home.halls.3.title">参观指南</h4>
+                        <p data-i18n="home.halls.3.desc">获取参观信息，规划您的线上博物馆之旅</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3><i class="fas fa-landmark" style="color:var(--color-secondary);margin-right:8px;"></i>蒙顶山茶文化数字博物馆</h3>
+                    <p data-i18n="footer.brand_desc">蒙顶山茶文化数字博物馆 — 穿越两千年的茶文化之旅，从一片叶子读懂中华文明。</p>
+                </div>
+                <div>
+                    <h4 data-i18n="footer.quick_links">快速导航</h4>
+                    <ul class="footer-links">
+                        <li><a href="history.html" data-i18n="nav.history">历史展厅</a></li>
+                        <li><a href="collection.html" data-i18n="nav.collection">藏品展厅</a></li>
+                        <li><a href="craft.html" data-i18n="nav.craft">工艺展厅</a></li>
+                        <li><a href="visit.html" data-i18n="nav.visit">参观指南</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 data-i18n="footer.contact_us">联系方式</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-envelope"></i> <span>info@mengdingshan-tea.com</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>蒙顶山茶</h4>
+                    <p style="font-size:0.85rem;color:rgba(245,240,232,0.6);line-height:1.8;">世界茶文化发源地<br>千年贡茶 · 传承经典</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">© 2025 蒙顶山茶文化数字博物馆</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./js/main.js"></script>
+</body>
+</html>

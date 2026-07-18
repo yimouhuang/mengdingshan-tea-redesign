@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>藏品展厅 | 蒙顶山茶文化数字博物馆</title>
+    <meta name="description" content="品鉴蒙顶山各类茶叶珍品，欣赏传统制茶工具与茶器文物">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body data-page="collection">
+
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon"><i class="fas fa-landmark"></i></span>
+                <span>蒙顶山茶文化数字博物馆</span>
+            </a>
+            <button class="menu-toggle" aria-label="菜单">
+                <span></span><span></span><span></span>
+            </button>
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="index.html" data-i18n="nav.home">入口大厅</a></li>
+                    <li><a href="history.html" data-i18n="nav.history">历史展厅</a></li>
+                    <li><a href="collection.html" data-i18n="nav.collection" class="active">藏品展厅</a></li>
+                    <li><a href="craft.html" data-i18n="nav.craft">工艺展厅</a></li>
+                    <li><a href="visit.html" data-i18n="nav.visit">参观指南</a></li>
+                    <li class="lang-switch">
+                        <button class="lang-btn" data-lang="zh" onclick="switchLanguage('zh')">中</button>
+                        <button class="lang-btn" data-lang="en" onclick="switchLanguage('en')">EN</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== BANNER ===== -->
+    <section class="page-banner">
+        <img src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=1600&q=80" alt="藏品展厅"
+             class="banner-bg">
+        <div class="banner-overlay"></div>
+        <div class="banner-content">
+            <h1 data-i18n="collection.banner_title">藏品展厅</h1>
+            <p data-i18n="collection.banner_sub">品鉴千年茶韵</p>
+        </div>
+    </section>
+
+    <!-- ===== COLLECTION ===== -->
+    <section class="collection-page immersive-section collection-gallery-page">
+        <div class="container">
+            <!-- Tabs -->
+            <div class="collection-tabs">
+                <button class="tab-btn active" data-tab="exhibits" data-i18n="collection.exhibits_tab">茶叶展品</button>
+                <button class="tab-btn" data-tab="tools" data-i18n="collection.tools_tab">制茶工具</button>
+            </div>
+
+            <!-- Filters (for exhibits only) -->
+            <div class="product-filters exhibit-filters">
+                <button class="filter-btn active" data-filter="all" data-i18n="collection.all">全部展品</button>
+                <button class="filter-btn" data-filter="green" data-i18n="collection.categories.green">绿茶类</button>
+                <button class="filter-btn" data-filter="yellow" data-i18n="collection.categories.yellow">黄茶类</button>
+                <button class="filter-btn" data-filter="flower" data-i18n="collection.categories.flower">花茶类</button>
+                <button class="filter-btn" data-filter="black" data-i18n="collection.categories.black">红茶类</button>
+            </div>
+
+            <!-- Grid -->
+            <div class="exhibit-grid" id="collectionGrid">
+                <!-- Dynamically rendered by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="exhibitModal"></div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3><i class="fas fa-landmark" style="color:var(--color-secondary);margin-right:8px;"></i>蒙顶山茶文化数字博物馆</h3>
+                    <p data-i18n="footer.brand_desc">蒙顶山茶文化数字博物馆 — 穿越两千年的茶文化之旅，从一片叶子读懂中华文明。</p>
+                </div>
+                <div>
+                    <h4 data-i18n="footer.quick_links">快速导航</h4>
+                    <ul class="footer-links">
+                        <li><a href="history.html" data-i18n="nav.history">历史展厅</a></li>
+                        <li><a href="collection.html" data-i18n="nav.collection">藏品展厅</a></li>
+                        <li><a href="craft.html" data-i18n="nav.craft">工艺展厅</a></li>
+                        <li><a href="visit.html" data-i18n="nav.visit">参观指南</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 data-i18n="footer.contact_us">联系方式</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-envelope"></i> <span>info@mengdingshan-tea.com</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>蒙顶山茶</h4>
+                    <p style="font-size:0.85rem;color:rgba(245,240,232,0.6);line-height:1.8;">世界茶文化发源地<br>千年贡茶 · 传承经典</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">© 2025 蒙顶山茶文化数字博物馆</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./js/main.js"></script>
+    <script src="./js/collection.js"></script>
+</body>
+</html>

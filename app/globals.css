@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+  --background: #060706;
+  --foreground: #f4f1e8;
+  --museum-paper: #f5f2ea;
+  --museum-ink: #171816;
+  --muted: #a8a395;
+  --line: rgb(244 241 232 / 0.16);
+  --panel: rgb(16 17 14 / 0.88);
+  --accent: #d3b35f;
+  --accent-strong: #f2d37a;
+  --tea-green: #7f9b68;
+}
+
+.archive-container { width: min(100% - 40px, 1600px); margin-inline: auto; }
+.archive-header { position: relative; z-index: 30; padding: 20px 0; background: #060806; }
+.archive-nav { min-height: 88px; display: flex; align-items: center; gap: 24px; padding: 12px 20px; border: 1px solid rgb(214 180 90 / .35); border-radius: 18px; background: rgb(7 10 8 / .82); backdrop-filter: blur(18px); }
+.archive-brand { display: flex; align-items: center; gap: 12px; min-width: 340px; color: #f3f0e5; }
+.archive-brand b,.archive-brand small { display:block; }.archive-brand b { font-family: var(--font-display); font-size: 18px; }.archive-brand small { margin-top: 3px; color: #d7d2c4; font-size: 12px; }
+.tea-mark { display:grid; place-items:center; width:42px; height:42px; border:1px solid #d6b45a; border-radius:50%; color:#d6b45a; }
+.archive-links { flex:1; display:flex; justify-content:center; gap:30px; }.archive-links a,.archive-links .archive-nav-unavailable { display:grid; gap:3px; text-align:center; color:#eee9de; font-size:16px; border-bottom:2px solid transparent; padding:12px 0; }.archive-links small,.archive-links .archive-nav-unavailable small { color:#c5c0b4; font-size:12px; }.archive-links .archive-nav-unavailable { opacity:.46; pointer-events:none; user-select:none; }.archive-links .is-active { color:#f0ce75; border-color:#9dc88d; }
+.archive-actions { display:flex; align-items:center; gap:18px; color:#f3e4b0; }.archive-icon { font-size:28px; line-height:1; }.archive-language { white-space:nowrap; }.archive-menu { display:none; width:42px; height:42px; background:none; border:1px solid rgb(214 180 90 / .55); border-radius:50%; }.archive-menu i { display:block; width:16px; height:1px; margin:4px auto; background:#d6b45a; }
+@supports not (backdrop-filter: blur(2px)) { .archive-nav { background:#090c09; } }
+@media (max-width: 1050px) { .archive-brand { min-width:0; }.archive-links { gap:16px; } }
+@media (max-width: 760px) { .archive-header { padding:12px 0; }.archive-nav { min-height:64px; padding:8px 12px; border-radius:12px; }.archive-brand b { font-size:14px; }.archive-brand small,.archive-language { display:none; }.archive-links { position:absolute; display:none; left:20px; right:20px; top:84px; padding:12px; border:1px solid rgb(214 180 90 / .3); border-radius:12px; background:#0a0e0a; }.archive-links.is-open { display:grid; grid-template-columns:repeat(2,1fr); }.archive-links a,.archive-links .archive-nav-unavailable { padding:10px; }.archive-menu { display:block; } }
+
+@theme inline {
+  --font-sans: var(--font-geist), var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), var(--font-syne), var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--background);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 4px;
+}
+
+::selection {
+  background: rgb(211 179 95 / 0.38);
+  color: white;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.archive-shell {
+  background:
+    radial-gradient(circle at 50% 0%, rgb(127 155 104 / 0.08), transparent 28rem),
+    linear-gradient(180deg, #070807 0%, #050605 100%);
+}
+
+.museum-paper {
+  background:
+    radial-gradient(circle at 62% 0%, rgb(211 179 95 / 0.08), transparent 25rem),
+    var(--museum-paper);
+  color: var(--museum-ink);
+}
+
+.image-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgb(0 0 0 / 0.78), rgb(0 0 0 / 0.3) 48%, rgb(0 0 0 / 0.18)),
+    linear-gradient(0deg, rgb(0 0 0 / 0.98), rgb(0 0 0 / 0.74) 30%, transparent 68%);
+}
+
+.card-vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgb(0 0 0 / 0.98), rgb(0 0 0 / 0.84) 30%, rgb(0 0 0 / 0.08) 68%);
+}
+
+.glass-panel {
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(135deg, rgb(255 255 255 / 0.12), rgb(255 255 255 / 0.035)),
+    var(--panel);
+  backdrop-filter: blur(20px) saturate(130%);
+  -webkit-backdrop-filter: blur(20px) saturate(130%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12), 0 24px 80px rgb(0 0 0 / 0.35);
+}
+
+.soft-separator {
+  background: linear-gradient(90deg, transparent, rgb(244 241 232 / 0.24), transparent);
+}
+
+.archive-star-trail {
+  contain: layout style paint;
+}
+
+.archive-star-trail-particle {
+  position: absolute;
+  width: var(--star-size);
+  height: var(--star-size);
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    rgb(255 249 218) 0 14%,
+    rgb(245 214 130 / 0.82) 28%,
+    rgb(214 180 90 / 0.18) 70%,
+    transparent 100%
+  );
+  box-shadow: 0 0 12px 3px rgb(214 180 90 / 0.26);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.72);
+  animation: archive-star-trail-fade 760ms ease-out forwards;
+  will-change: opacity, transform;
+}
+
+@keyframes archive-star-trail-fade {
+  0% {
+    opacity: var(--star-opacity);
+    transform: translate(-50%, -50%) scale(0.72);
+  }
+
+  42% {
+    opacity: var(--star-mid-opacity);
+    transform: translate(-50%, -50%) scale(1.18);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .archive-star-trail {
+    display: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
