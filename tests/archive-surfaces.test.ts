@@ -11,6 +11,10 @@ const librarySource = readFileSync(
   "utf8"
 )
 const archiveNavSource = readFileSync(resolve(projectRoot, "components/archive-nav.tsx"), "utf8")
+const mediaPageSource = readFileSync(
+  resolve(projectRoot, "app/media/[slug]/page.tsx"),
+  "utf8"
+)
 
 function cardTypeOverlay(source: string, cardMapStart: string): string {
   const cardStart = source.indexOf(cardMapStart)
@@ -72,6 +76,47 @@ test("library browser remains poster-only", () => {
   assert.doesNotMatch(librarySource, /<source/i)
   assert.doesNotMatch(librarySource, /item\.video/)
   assert.doesNotMatch(librarySource, /\.mp4/)
+})
+
+test("media detail keeps dedicated video, photo, and poster render paths", () => {
+  assert.match(mediaPageSource, /item\.kind === "video"/)
+  assert.match(mediaPageSource, /<video[\s\S]*?<source/)
+  assert.match(mediaPageSource, /item\.kind === "poster"/)
+  assert.match(mediaPageSource, /relative aspect-video[\s\S]*?className="object-contain"/)
+})
+
+test("poster detail renders every portrait page in a responsive one-or-two-column grid", () => {
+  assert.match(mediaPageSource, /item\.pages\.map\(\(page, index\) =>/)
+  assert.match(mediaPageSource, /grid gap-3 p-3/)
+  assert.match(mediaPageSource, /item\.pages\.length === 1[\s\S]*?mx-auto max-w-2xl[\s\S]*?md:grid-cols-2/)
+  assert.match(mediaPageSource, /relative aspect-\[210\/297\] overflow-hidden bg-black/)
+  assert.match(mediaPageSource, /src=\{page\}/)
+  assert.match(mediaPageSource, /alt=\{`\$\{item\.titleZh\} \$\{index \+ 1\}`\}/)
+  assert.match(mediaPageSource, /sizes="\(min-width: 1280px\) 35vw, 100vw"/)
+})
+
+test("media detail labels kinds centrally and reports poster page count", () => {
+  assert.match(mediaPageSource, /getMediaKindLabel\(item\.kind\)/)
+  assert.match(mediaPageSource, /item\.assetCount \?\? item\.pages\.length/)
+  assert.match(mediaPageSource, /item\.duration/)
+})
+
+test("related poster thumbnails fit while other media keeps its crop", () => {
+  assert.match(
+    mediaPageSource,
+    /record\.kind === "poster"\s*\?\s*"object-contain bg-\[#080b08\]"\s*:\s*"object-cover"/
+  )
+})
+
+test("media detail adds no design-system or third-party UI dependency", () => {
+  const importSources = [...mediaPageSource.matchAll(/from\s+["']([^"']+)["']/g)].map(
+    ([, source]) => source
+  )
+
+  assert.ok(
+    importSources.every(source => source.startsWith("next/") || source.startsWith("@/")),
+    `Unexpected third-party UI import: ${importSources.join(", ")}`
+  )
 })
 
 test("navigation menu button describes its expanded state", () => {

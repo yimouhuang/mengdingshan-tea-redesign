@@ -18,7 +18,8 @@ type LibraryView = "grid" | "list"
 const libraryKindFilters: ReadonlyArray<{ value: LibraryKind; label: string }> = [
   { value: "all", label: "全部 / All" },
   { value: "photo", label: getMediaKindLabel("photo") },
-  { value: "video", label: getMediaKindLabel("video") }
+  { value: "video", label: getMediaKindLabel("video") },
+  { value: "poster", label: getMediaKindLabel("poster") }
 ]
 
 export function MediaLibraryBrowser() {
@@ -153,7 +154,7 @@ export function MediaLibraryBrowser() {
                     fill
                     unoptimized
                     sizes={view === "grid" ? "(min-width: 1280px) 25vw, (min-width: 640px) 45vw, 100vw" : "(min-width: 640px) 220px, 100vw"}
-                    className="object-cover transition duration-500 group-hover:scale-105"
+                    className={item.kind === "poster" ? "object-contain bg-[#080b08] transition duration-500 group-hover:scale-[1.02]" : "object-cover transition duration-500 group-hover:scale-105"}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                   <span className="absolute right-3 top-3 rounded border border-white/15 bg-black/70 px-2 py-1 text-xs text-[#f3f0e5]">
