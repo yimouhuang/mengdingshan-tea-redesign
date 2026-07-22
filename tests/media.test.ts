@@ -191,7 +191,7 @@ test("media index contains the exact refreshed 29-record archive", () => {
   const homeOrders = mediaItems.map((item) => item.homeOrder)
 
   assert.equal(mediaItems.length, 29)
-  assert.deepEqual(new Set(slugs), new Set(expectedSlugs))
+  assert.deepEqual(slugs, expectedSlugs)
   assert.equal(new Set(homeOrders).size, 29)
   assert.ok(mediaItems.every((item) => item.titleZh.trim().length > 0))
   assert.ok(mediaItems.every((item) => item.titleEn.trim().length > 0))
