@@ -67,7 +67,7 @@ export function toggleMediaFavorite(
 
   const isFavorite = !favorites.includes(slug)
   const nextFavorites = isFavorite
-    ? [slug, ...favorites]
+    ? [slug, ...favorites].slice(0, MEDIA_FAVORITES_LIMIT)
     : favorites.filter((favorite) => favorite !== slug)
 
   try {
@@ -77,6 +77,13 @@ export function toggleMediaFavorite(
   }
 
   return { favorites: nextFavorites, isFavorite }
+}
+
+export function shouldShowNoSavedMedia(
+  favoritesOnly: boolean,
+  favoriteSlugs: ReadonlySet<string>
+): boolean {
+  return favoritesOnly && favoriteSlugs.size === 0
 }
 
 export function buildMediaShareData(

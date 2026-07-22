@@ -7,7 +7,8 @@ import {
   MEDIA_FAVORITES_CHANGED_EVENT,
   MEDIA_FAVORITES_STORAGE_KEY,
   parseMediaFavorites,
-  readMediaFavorites
+  readMediaFavorites,
+  shouldShowNoSavedMedia
 } from "@/lib/media-favorites"
 import {
   filterMedia,
@@ -35,14 +36,14 @@ export function MediaLibraryBrowser() {
   const [sort, setSort] = useState<NonNullable<ArchiveFilter["sort"]>>("latest")
   const [view, setView] = useState<LibraryView>("grid")
   const [favoritesOnly, setFavoritesOnly] = useState(false)
-  const [favoriteSlugs, setFavoriteSlugs] = useState<string[]>([])
+  const [favoriteSlugs, setFavoriteSlugs] = useState<ReadonlySet<string>>(() => new Set())
 
   const categories = useMemo(() => getMediaCategories(mediaItems), [])
   const knownSlugs = useMemo(() => mediaItems.map((item) => item.slug), [])
 
   useEffect(() => {
     function syncFavorites() {
-      setFavoriteSlugs(readMediaFavorites(window.localStorage, knownSlugs))
+      setFavoriteSlugs(new Set(readMediaFavorites(window.localStorage, knownSlugs)))
     }
 
     function handleStorage(event: StorageEvent) {
@@ -50,14 +51,16 @@ export function MediaLibraryBrowser() {
         return
       }
 
-      setFavoriteSlugs(parseMediaFavorites(event.newValue, knownSlugs))
+      setFavoriteSlugs(new Set(parseMediaFavorites(event.newValue, knownSlugs)))
     }
 
     function handleFavoritesChanged(event: Event) {
       const favorites = event instanceof CustomEvent ? event.detail?.favorites : undefined
 
       if (Array.isArray(favorites)) {
-        setFavoriteSlugs(parseMediaFavorites(JSON.stringify(favorites), knownSlugs))
+        setFavoriteSlugs(
+          new Set(parseMediaFavorites(JSON.stringify(favorites), knownSlugs))
+        )
         return
       }
 
@@ -83,9 +86,10 @@ export function MediaLibraryBrowser() {
       })
 
     return favoritesOnly
-      ? filtered.filter((item) => favoriteSlugs.includes(item.slug))
+      ? filtered.filter((item) => favoriteSlugs.has(item.slug))
       : filtered
   }, [category, favoriteSlugs, favoritesOnly, kind, query, sort])
+  const showNoSavedMedia = shouldShowNoSavedMedia(favoritesOnly, favoriteSlugs)
   const isDefault =
     !query &&
     !category &&
@@ -233,10 +237,10 @@ export function MediaLibraryBrowser() {
         ) : (
           <div className="mt-4 border border-dashed border-white/20 px-6 py-14 text-center">
             <p className="font-display text-2xl text-[#f3f0e5]">
-              {favoritesOnly ? "尚未收藏影像 / No saved records" : "未找到匹配档案 / No matching records"}
+              {showNoSavedMedia ? "尚未收藏影像 / No saved records" : "未找到匹配档案 / No matching records"}
             </p>
             <p className="mt-2 text-sm text-[#eee9de]/62">
-              {favoritesOnly ? "收藏仅保存在当前浏览器 / Favorites stay in this browser." : "尝试其他关键词或重置筛选条件。"}
+              {showNoSavedMedia ? "收藏仅保存在当前浏览器 / Favorites stay in this browser." : "尝试其他关键词或重置筛选条件。"}
             </p>
             <button
               type="button"

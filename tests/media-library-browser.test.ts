@@ -93,7 +93,7 @@ test("library introduction includes photo, video, and poster records", () => {
 
 test("favorite library filter intersects the existing archive filters without changing kind", () => {
   assert.match(librarySource, /const \[favoritesOnly, setFavoritesOnly\] = useState\(false\)/)
-  assert.match(librarySource, /filterMedia\(mediaItems,[\s\S]*?favoritesOnly[\s\S]*?filtered\.filter\([\s\S]*?favoriteSlugs\.includes\(item\.slug\)/)
+  assert.match(librarySource, /filterMedia\(mediaItems,[\s\S]*?favoritesOnly[\s\S]*?filtered\.filter\([\s\S]*?favoriteSlugs\.has\(item\.slug\)/)
 
   const favoritePressed = librarySource.indexOf("aria-pressed={favoritesOnly}")
   const favoriteButtonStart = librarySource.lastIndexOf("<button", favoritePressed)
@@ -127,6 +127,8 @@ test("favorite library state synchronizes from storage and same-tab changes with
 test("favorite library filter participates in default state, reset, and empty copy", () => {
   assert.match(librarySource, /const isDefault =[\s\S]*?!favoritesOnly/)
   assert.match(librarySource, /function resetFilters\(\)[\s\S]*?setFavoritesOnly\(false\)/)
+  assert.match(librarySource, /shouldShowNoSavedMedia\(favoritesOnly, favoriteSlugs\)/)
+  assert.match(librarySource, /showNoSavedMedia \? "尚未收藏影像 \/ No saved records" : "未找到匹配档案 \/ No matching records"/)
   assert.match(librarySource, /尚未收藏影像 \/ No saved records/)
   assert.match(librarySource, /收藏仅保存在当前浏览器 \/ Favorites stay in this browser\./)
   assert.match(librarySource, /No matching records/)

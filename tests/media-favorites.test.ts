@@ -6,6 +6,7 @@ import {
   buildMediaShareData,
   parseMediaFavorites,
   readMediaFavorites,
+  shouldShowNoSavedMedia,
   toggleMediaFavorite
 } from "../lib/media-favorites"
 
@@ -114,6 +115,32 @@ test("toggleMediaFavorite returns its in-memory result when writing throws", () 
     favorites: ["first"],
     isFavorite: true
   })
+})
+
+test("toggleMediaFavorite keeps at most one hundred favorites when adding", () => {
+  const knownSlugs = Array.from({ length: 101 }, (_, index) => `record-${index}`)
+  const existing = knownSlugs.slice(1)
+  let writtenValue = ""
+  const storage = {
+    getItem() {
+      return JSON.stringify(existing)
+    },
+    setItem(_key: string, value: string) {
+      writtenValue = value
+    }
+  }
+
+  const result = toggleMediaFavorite(storage, knownSlugs[0], knownSlugs)
+
+  assert.equal(result.favorites.length, 100)
+  assert.deepEqual(result.favorites, [knownSlugs[0], ...existing.slice(0, 99)])
+  assert.equal(writtenValue, JSON.stringify(result.favorites))
+})
+
+test("shouldShowNoSavedMedia only selects the dedicated empty state with no favorites", () => {
+  assert.equal(shouldShowNoSavedMedia(true, new Set()), true)
+  assert.equal(shouldShowNoSavedMedia(true, new Set(["saved-record"])), false)
+  assert.equal(shouldShowNoSavedMedia(false, new Set()), false)
 })
 
 test("buildMediaShareData creates the bilingual archive payload", () => {

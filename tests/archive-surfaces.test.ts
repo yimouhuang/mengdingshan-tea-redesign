@@ -177,4 +177,12 @@ test("share action prefers navigator share and falls back to the clipboard", () 
   const shareIndex = mediaActionsSource.indexOf("navigator.share(")
   const clipboardIndex = mediaActionsSource.indexOf("navigator.clipboard.writeText(")
   assert.ok(shareIndex >= 0 && shareIndex < clipboardIndex, "Web Share must be preferred")
+
+  const handlerIndex = mediaActionsSource.indexOf("async function handleShare()")
+  const clearFeedbackIndex = mediaActionsSource.indexOf('setFeedback("")', handlerIndex)
+  const tryIndex = mediaActionsSource.indexOf("try {", handlerIndex)
+  assert.ok(
+    handlerIndex >= 0 && clearFeedbackIndex > handlerIndex && clearFeedbackIndex < tryIndex,
+    "Share must clear stale feedback before starting"
+  )
 })

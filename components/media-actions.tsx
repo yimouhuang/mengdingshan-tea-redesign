@@ -45,6 +45,8 @@ export function MediaActions({
   }
 
   async function handleShare() {
+    setFeedback("")
+
     try {
       if (typeof navigator.share === "function") {
         await navigator.share(buildMediaShareData(titleZh, titleEn, window.location.href))
