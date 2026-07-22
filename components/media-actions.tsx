@@ -7,6 +7,7 @@ import {
   readMediaFavorites,
   toggleMediaFavorite
 } from "@/lib/media-favorites"
+import { shareMediaRecord } from "@/lib/media-share"
 
 type MediaActionsProps = {
   slug: string
@@ -29,40 +30,45 @@ export function MediaActions({
   }, [knownSlugs, slug])
 
   function handleFavorite() {
-    const { favorites, isFavorite: nextIsFavorite } = toggleMediaFavorite(
+    const result = toggleMediaFavorite(
       window.localStorage,
       slug,
       knownSlugs
     )
 
-    setIsFavorite(nextIsFavorite)
-    setFeedback(nextIsFavorite ? "已收藏 / Saved" : "已取消收藏 / Removed")
+    if (!result.persisted) {
+      setFeedback("收藏失败，请检查浏览器存储 / Unable to save favorite.")
+      return
+    }
+
+    setIsFavorite(result.isFavorite)
+    setFeedback(result.isFavorite ? "已收藏 / Saved" : "已取消收藏 / Removed")
     window.dispatchEvent(
       new CustomEvent(MEDIA_FAVORITES_CHANGED_EVENT, {
-        detail: { favorites }
+        detail: { favorites: result.favorites }
       })
     )
   }
 
   async function handleShare() {
     setFeedback("")
+    const result = await shareMediaRecord(navigator, buildMediaShareData(titleZh, titleEn, window.location.href))
 
-    try {
-      if (typeof navigator.share === "function") {
-        await navigator.share(buildMediaShareData(titleZh, titleEn, window.location.href))
-        setFeedback("已分享 / Shared")
-        return
-      }
-
-      await navigator.clipboard.writeText(window.location.href)
-      setFeedback("链接已复制 / Link copied")
-    } catch (error) {
-      if (error instanceof Error && error.name === "AbortError") {
-        return
-      }
-
-      setFeedback("分享失败，请复制地址栏链接 / Unable to share. Copy the address-bar link.")
+    if (result === "shared") {
+      setFeedback("已分享 / Shared")
+      return
     }
+
+    if (result === "copied") {
+      setFeedback("链接已复制 / Link copied")
+      return
+    }
+
+    if (result === "aborted") {
+      return
+    }
+
+    setFeedback("分享失败，请复制地址栏链接 / Unable to share. Copy the address-bar link.")
   }
 
   return (

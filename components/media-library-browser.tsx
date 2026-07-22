@@ -47,6 +47,15 @@ export function MediaLibraryBrowser() {
     }
 
     function handleStorage(event: StorageEvent) {
+      if (event.storageArea && event.storageArea !== window.localStorage) {
+        return
+      }
+
+      if (event.key === null) {
+        syncFavorites()
+        return
+      }
+
       if (event.key !== MEDIA_FAVORITES_STORAGE_KEY) {
         return
       }

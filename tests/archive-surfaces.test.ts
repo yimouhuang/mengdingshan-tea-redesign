@@ -163,26 +163,24 @@ test("favorite action is an accessible client control with same-tab feedback", (
   assert.match(mediaActionsSource, /★ 已收藏 \/ Saved/)
   assert.match(mediaActionsSource, /aria-live="polite"/)
   assert.match(mediaActionsSource, /已取消收藏 \/ Removed/)
-  assert.match(mediaActionsSource, /new CustomEvent\(MEDIA_FAVORITES_CHANGED_EVENT,[\s\S]*?detail: \{ favorites \}/)
+  assert.match(mediaActionsSource, /if \(!result\.persisted\)[\s\S]*?收藏失败，请检查浏览器存储 \/ Unable to save favorite\.[\s\S]*?return/)
+  assert.match(mediaActionsSource, /setIsFavorite\(result\.isFavorite\)/)
+  assert.match(mediaActionsSource, /new CustomEvent\(MEDIA_FAVORITES_CHANGED_EVENT,[\s\S]*?detail: \{ favorites: result\.favorites \}/)
 })
 
-test("share action prefers navigator share and falls back to the clipboard", () => {
-  assert.match(mediaActionsSource, /navigator\.share\(buildMediaShareData\(titleZh, titleEn, window\.location\.href\)\)/)
+test("share action delegates real browser behavior and maps every result", () => {
+  assert.match(mediaActionsSource, /from ["']@\/lib\/media-share["']/)
+  assert.match(mediaActionsSource, /shareMediaRecord\(navigator, buildMediaShareData\(titleZh, titleEn, window\.location\.href\)\)/)
   assert.match(mediaActionsSource, /已分享 \/ Shared/)
-  assert.match(mediaActionsSource, /navigator\.clipboard\.writeText\(window\.location\.href\)/)
   assert.match(mediaActionsSource, /链接已复制 \/ Link copied/)
-  assert.match(mediaActionsSource, /error\.name === "AbortError"/)
+  assert.match(mediaActionsSource, /result === "aborted"/)
   assert.match(mediaActionsSource, /分享失败，请复制地址栏链接 \/ Unable to share\. Copy the address-bar link\./)
-
-  const shareIndex = mediaActionsSource.indexOf("navigator.share(")
-  const clipboardIndex = mediaActionsSource.indexOf("navigator.clipboard.writeText(")
-  assert.ok(shareIndex >= 0 && shareIndex < clipboardIndex, "Web Share must be preferred")
 
   const handlerIndex = mediaActionsSource.indexOf("async function handleShare()")
   const clearFeedbackIndex = mediaActionsSource.indexOf('setFeedback("")', handlerIndex)
-  const tryIndex = mediaActionsSource.indexOf("try {", handlerIndex)
+  const shareIndex = mediaActionsSource.indexOf("shareMediaRecord(", handlerIndex)
   assert.ok(
-    handlerIndex >= 0 && clearFeedbackIndex > handlerIndex && clearFeedbackIndex < tryIndex,
+    handlerIndex >= 0 && clearFeedbackIndex > handlerIndex && clearFeedbackIndex < shareIndex,
     "Share must clear stale feedback before starting"
   )
 })

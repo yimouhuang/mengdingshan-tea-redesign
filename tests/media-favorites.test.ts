@@ -34,6 +34,24 @@ test("parseMediaFavorites limits the result to one hundred entries", () => {
   )
 })
 
+test("parseMediaFavorites rejects raw payloads larger than fifty thousand characters", () => {
+  assert.deepEqual(parseMediaFavorites("[" + " ".repeat(50_000) + "]", ["known"]), [])
+})
+
+test("parseMediaFavorites scans at most the first one thousand array items", () => {
+  const invalidThenKnown = [...Array.from({ length: 1_000 }, () => null), "known"]
+  const duplicatesThenLateSlug = [
+    ...Array.from({ length: 1_000 }, () => "first"),
+    "second"
+  ]
+
+  assert.deepEqual(parseMediaFavorites(JSON.stringify(invalidThenKnown), ["known"]), [])
+  assert.deepEqual(
+    parseMediaFavorites(JSON.stringify(duplicatesThenLateSlug), ["first", "second"]),
+    ["first"]
+  )
+})
+
 test("readMediaFavorites returns an empty list when storage throws", () => {
   const storage = {
     getItem() {
@@ -59,7 +77,8 @@ test("toggleMediaFavorite adds a new favorite at the front", () => {
 
   assert.deepEqual(toggleMediaFavorite(storage, "first", ["first", "second"]), {
     favorites: ["first", "second"],
-    isFavorite: true
+    isFavorite: true,
+    persisted: true
   })
   assert.equal(writtenKey, MEDIA_FAVORITES_STORAGE_KEY)
   assert.equal(writtenValue, JSON.stringify(["first", "second"]))
@@ -78,7 +97,8 @@ test("toggleMediaFavorite removes an existing favorite", () => {
 
   assert.deepEqual(toggleMediaFavorite(storage, "first", ["first", "second"]), {
     favorites: ["second"],
-    isFavorite: false
+    isFavorite: false,
+    persisted: true
   })
   assert.equal(writtenValue, JSON.stringify(["second"]))
 })
@@ -96,12 +116,13 @@ test("toggleMediaFavorite ignores an unknown slug without writing", () => {
 
   assert.deepEqual(toggleMediaFavorite(storage, "unknown", ["first"]), {
     favorites: ["first"],
-    isFavorite: false
+    isFavorite: false,
+    persisted: false
   })
   assert.equal(writes, 0)
 })
 
-test("toggleMediaFavorite returns its in-memory result when writing throws", () => {
+test("toggleMediaFavorite keeps the original state when adding cannot be persisted", () => {
   const storage = {
     getItem() {
       return null
@@ -112,8 +133,26 @@ test("toggleMediaFavorite returns its in-memory result when writing throws", () 
   }
 
   assert.deepEqual(toggleMediaFavorite(storage, "first", ["first"]), {
+    favorites: [],
+    isFavorite: false,
+    persisted: false
+  })
+})
+
+test("toggleMediaFavorite keeps the original state when removal cannot be persisted", () => {
+  const storage = {
+    getItem() {
+      return JSON.stringify(["first"])
+    },
+    setItem() {
+      throw new Error("quota exceeded")
+    }
+  }
+
+  assert.deepEqual(toggleMediaFavorite(storage, "first", ["first"]), {
     favorites: ["first"],
-    isFavorite: true
+    isFavorite: true,
+    persisted: false
   })
 })
 
@@ -132,6 +171,7 @@ test("toggleMediaFavorite keeps at most one hundred favorites when adding", () =
 
   const result = toggleMediaFavorite(storage, knownSlugs[0], knownSlugs)
 
+  assert.equal(result.persisted, true)
   assert.equal(result.favorites.length, 100)
   assert.deepEqual(result.favorites, [knownSlugs[0], ...existing.slice(0, 99)])
   assert.equal(writtenValue, JSON.stringify(result.favorites))
