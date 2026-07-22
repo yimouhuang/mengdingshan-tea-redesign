@@ -2,7 +2,7 @@ import { resolveMediaUrl } from "./media-url"
 
 export { resolveMediaUrl } from "./media-url"
 
-export type MediaKind = "photo" | "video"
+export type MediaKind = "photo" | "video" | "poster"
 
 export type MediaAspect = "4:3" | "3:4" | "16:9"
 
@@ -42,7 +42,14 @@ export type VideoMedia = MediaBase & {
   duration: string
 }
 
-export type TeaMedia = PhotoMedia | VideoMedia
+export type PosterMedia = MediaBase & {
+  kind: "poster"
+  pages: string[]
+  video?: never
+  duration?: never
+}
+
+export type TeaMedia = PhotoMedia | VideoMedia | PosterMedia
 
 export type ArchiveFilter = {
   kind?: MediaKind
@@ -59,7 +66,7 @@ export type MediaCategory = {
 }
 
 const archiveCollection = "影像馆采集 / Archive field collection"
-const rightsUnderReview = "权利状态待核 / Rights status under review"
+const rightsReviewed = "权利状态已审核 / Rights status reviewed"
 const dateNotSpecified = "日期未标注 / Date not specified"
 const mengdingMountainZh = "蒙顶山"
 const mengdingMountainEn = "Mengding Mountain"
@@ -68,14 +75,14 @@ const categories = {
   landmarks: { zh: "景区地标", en: "Mountain Landmarks" },
   gardens: { zh: "山水茶园", en: "Mountain & Tea Gardens" },
   teaWork: { zh: "茶事劳作", en: "Tea Work" },
-  heritage: { zh: "茶文化遗存", en: "Tea Heritage" },
+  heritage: { zh: "茶文化遗产", en: "Tea Heritage" },
   mountainLife: { zh: "山间人文", en: "Mountain Life" }
 } as const
 
 const featuredHomeSlugs = [
-  "mengding-mountain-gateway",
-  "tea-garden-overlook",
-  "picking-new-tea-shoots",
+  "one-leaf-two-millennia",
+  "ancient-tea-tree-of-mengding",
+  "red-gate-of-mengding",
   "sorting-fresh-leaves",
   "tea-ancestor-relief"
 ] as const
@@ -108,6 +115,11 @@ type PhotoSeed = ArchiveSeed & {
   archiveId: string
 }
 
+type PosterSeed = ArchiveSeed & {
+  assetId: string
+  pages: string[]
+}
+
 function createVideo(seed: VideoSeed): VideoMedia {
   const { assetId, duration, ...item } = seed
 
@@ -125,7 +137,7 @@ function createVideo(seed: VideoSeed): VideoMedia {
     assetCount: 1,
     captureDate: dateNotSpecified,
     photographer: archiveCollection,
-    rights: rightsUnderReview,
+    rights: rightsReviewed,
     featured: featuredHomeOrderBySlug.has(item.slug)
   }
 }
@@ -144,12 +156,49 @@ function createPhoto(seed: PhotoSeed): PhotoMedia {
     assetCount: 1,
     captureDate: dateNotSpecified,
     photographer: archiveCollection,
-    rights: rightsUnderReview,
+    rights: rightsReviewed,
+    featured: featuredHomeOrderBySlug.has(item.slug)
+  }
+}
+
+function createPoster(seed: PosterSeed): PosterMedia {
+  const { assetId, pages, ...item } = seed
+
+  return {
+    ...item,
+    kind: "poster",
+    year: dateNotSpecified,
+    locationZh: mengdingMountainZh,
+    locationEn: mengdingMountainEn,
+    poster: resolveMediaUrl(`/media/posters/${assetId}-thumb.webp`),
+    pages: pages.map((page) => resolveMediaUrl(`/media/posters/${page}`)),
+    signal: `${item.categoryZh} / ${item.categoryEn}`,
+    archiveId: `MDS-PO-${assetId.toUpperCase()}`,
+    assetCount: pages.length,
+    captureDate: dateNotSpecified,
+    photographer: archiveCollection,
+    rights: rightsReviewed,
     featured: featuredHomeOrderBySlug.has(item.slug)
   }
 }
 
 const seededMediaItems: TeaMedia[] = [
+  createVideo({
+    assetId: "one-leaf-two-millennia",
+    slug: "one-leaf-two-millennia",
+    titleZh: "一叶千年",
+    titleEn: "One Leaf, Two Millennia",
+    categoryZh: categories.heritage.zh,
+    categoryEn: categories.heritage.en,
+    descriptionZh:
+      "从公元前53年的起源叙事、云雾茶园与皇茶园，到手工采制和当代博物馆，串起蒙顶茶跨越两千年的传承。",
+    descriptionEn:
+      "From its origin story in 53 BCE through misty tea gardens, imperial cultivation, handcraft, and the modern museum, the film traces two millennia of Mengding tea heritage.",
+    tags: ["蒙顶茶", "Tea heritage", "Vlog"],
+    duration: "485.0s",
+    homeOrder: 1,
+    aspect: "16:9"
+  }),
   createVideo({
     assetId: "gh010090",
     slug: "mengding-mountain-gateway",
@@ -277,20 +326,6 @@ const seededMediaItems: TeaMedia[] = [
     aspect: "16:9"
   }),
   createVideo({
-    assetId: "gh010120",
-    slug: "way-up-the-mountain",
-    titleZh: "上山由此去",
-    titleEn: "Way Up the Mountain",
-    categoryZh: categories.landmarks.zh,
-    categoryEn: categories.landmarks.en,
-    descriptionZh: "镜头记录一处指向上山方向的提示。",
-    descriptionEn: "A view of a sign indicating the way up the mountain.",
-    tags: ["上山", "Wayfinding", "Video"],
-    duration: "5.4s",
-    homeOrder: 10,
-    aspect: "16:9"
-  }),
-  createVideo({
     assetId: "gh010124",
     slug: "tea-ancestor-relief",
     titleZh: "茶祖浮雕",
@@ -389,34 +424,6 @@ const seededMediaItems: TeaMedia[] = [
     aspect: "16:9"
   }),
   createVideo({
-    assetId: "gh010199",
-    slug: "a-retreat-for-wellbeing",
-    titleZh: "人间养生场",
-    titleEn: "A Retreat for Wellbeing",
-    categoryZh: categories.mountainLife.zh,
-    categoryEn: categories.mountainLife.en,
-    descriptionZh: "镜头记录题有“人间养生场”的景观文字。",
-    descriptionEn: "A view of landscape text that reads “A Retreat for Wellbeing.”",
-    tags: ["养生", "Wellbeing", "Video"],
-    duration: "3.5s",
-    homeOrder: 18,
-    aspect: "16:9"
-  }),
-  createVideo({
-    assetId: "gh010219",
-    slug: "picking-new-tea-shoots",
-    titleZh: "采一芽",
-    titleEn: "Picking New Tea Shoots",
-    categoryZh: categories.teaWork.zh,
-    categoryEn: categories.teaWork.en,
-    descriptionZh: "镜头记录采摘一芽茶叶的手部动作。",
-    descriptionEn: "A close view of hands picking new tea shoots.",
-    tags: ["采茶", "Tea picking", "Video"],
-    duration: "9.7s",
-    homeOrder: 19,
-    aspect: "16:9"
-  }),
-  createVideo({
     assetId: "gh010230",
     slug: "new-tea-shoots",
     titleZh: "茶芽初展",
@@ -442,20 +449,6 @@ const seededMediaItems: TeaMedia[] = [
     tags: ["鲜叶", "Sorting", "Video"],
     duration: "16.5s",
     homeOrder: 21,
-    aspect: "16:9"
-  }),
-  createVideo({
-    assetId: "gh010258",
-    slug: "fresh-leaves-in-hand",
-    titleZh: "鲜叶在手",
-    titleEn: "Fresh Leaves in Hand",
-    categoryZh: categories.teaWork.zh,
-    categoryEn: categories.teaWork.en,
-    descriptionZh: "镜头聚焦手中捧起的鲜叶。",
-    descriptionEn: "A close view of fresh leaves held in hand.",
-    tags: ["鲜叶", "Hands", "Video"],
-    duration: "5.4s",
-    homeOrder: 22,
     aspect: "16:9"
   }),
   createVideo({
@@ -485,20 +478,6 @@ const seededMediaItems: TeaMedia[] = [
     tags: ["牌坊", "Archway", "Photo"],
     homeOrder: 24,
     aspect: "3:4"
-  }),
-  createPhoto({
-    assetName: "tea-garden-overlook.jpg",
-    archiveId: "MDS-PH-21D77D9C",
-    slug: "tea-garden-overlook",
-    titleZh: "茶园远眺",
-    titleEn: "Tea Garden Overlook",
-    categoryZh: categories.gardens.zh,
-    categoryEn: categories.gardens.en,
-    descriptionZh: "静态影像呈现茶园与山地环境的远景。",
-    descriptionEn: "A still overlook of the tea garden and its mountain setting.",
-    tags: ["茶园", "Overlook", "Photo"],
-    homeOrder: 25,
-    aspect: "4:3"
   }),
   createPhoto({
     assetName: "world-tea-culture-museum.jpg",
@@ -555,6 +534,62 @@ const seededMediaItems: TeaMedia[] = [
     tags: ["养生", "Landscape text", "Photo"],
     homeOrder: 29,
     aspect: "3:4"
+  }),
+  createPoster({
+    assetId: "origin-of-tea",
+    pages: ["origin-of-tea.png"],
+    slug: "origin-of-tea",
+    titleZh: "蒙顶山茶",
+    titleEn: "The Origin of Tea",
+    categoryZh: categories.heritage.zh,
+    categoryEn: categories.heritage.en,
+    descriptionZh: "以海报讲述蒙顶山茶的起源与传承。",
+    descriptionEn: "A poster introducing the origin and legacy of Mengding tea.",
+    tags: ["蒙顶山茶", "Origin of tea", "Poster"],
+    homeOrder: 30,
+    aspect: "3:4"
+  }),
+  createPoster({
+    assetId: "tea-and-nature",
+    pages: ["tea-and-nature-01.png", "tea-and-nature-02.png"],
+    slug: "tea-and-nature-in-harmony",
+    titleZh: "生态植茶",
+    titleEn: "Tea and Nature in Harmony",
+    categoryZh: categories.heritage.zh,
+    categoryEn: categories.heritage.en,
+    descriptionZh: "两页海报呈现茶园生态与自然共生。",
+    descriptionEn: "Two poster pages present tea cultivation in harmony with nature.",
+    tags: ["生态植茶", "Tea and nature", "Poster"],
+    homeOrder: 31,
+    aspect: "3:4"
+  }),
+  createPoster({
+    assetId: "solar-terms-picking",
+    pages: ["solar-terms-picking-01.png", "solar-terms-picking-02.png"],
+    slug: "tea-picking-through-the-solar-terms",
+    titleZh: "节气采茶",
+    titleEn: "Tea Picking Through the Solar Terms",
+    categoryZh: categories.heritage.zh,
+    categoryEn: categories.heritage.en,
+    descriptionZh: "两页海报梳理节气流转中的采茶时序。",
+    descriptionEn: "Two poster pages trace tea-picking rhythms through the solar terms.",
+    tags: ["节气采茶", "Solar terms", "Poster"],
+    homeOrder: 32,
+    aspect: "3:4"
+  }),
+  createPoster({
+    assetId: "tea-hospitality",
+    pages: ["tea-hospitality-01.png", "tea-hospitality-02.png"],
+    slug: "chinese-tea-hospitality",
+    titleZh: "茶礼之道",
+    titleEn: "Chinese Tea Hospitality",
+    categoryZh: categories.heritage.zh,
+    categoryEn: categories.heritage.en,
+    descriptionZh: "两页海报介绍中国茶礼与待客之道。",
+    descriptionEn: "Two poster pages introduce Chinese tea etiquette and hospitality.",
+    tags: ["茶礼", "Tea hospitality", "Poster"],
+    homeOrder: 33,
+    aspect: "3:4"
   })
 ]
 
@@ -573,7 +608,11 @@ export const mediaItems: TeaMedia[] = seededMediaItems.map((item) => {
 })
 
 export function getMediaKindLabel(kind: MediaKind): string {
-  return kind === "video" ? "视频 / Video" : "图片 / Photo"
+  if (kind === "video") {
+    return "视频 / Video"
+  }
+
+  return kind === "photo" ? "图片 / Photo" : "海报 / Poster"
 }
 
 function normalize(value: string): string {

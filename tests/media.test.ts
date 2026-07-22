@@ -14,8 +14,8 @@ import { fileURLToPath } from "node:url"
 
 import {
   filterMedia,
-  getMediaCategories,
   getFeaturedMedia,
+  getMediaCategories,
   getMediaKindLabel,
   getMediaNeighbors,
   getRelatedMedia,
@@ -24,9 +24,104 @@ import {
 
 const publicDirectory = resolve(dirname(fileURLToPath(import.meta.url)), "../public")
 const bytesPerMiB = 1024 * 1024
-const minHighQualityDeliveryVideoAggregateBytes = 150 * bytesPerMiB
-const maxHighQualityDeliveryVideoBytes = 80 * bytesPerMiB
-const maxHighQualityDeliveryVideoAggregateBytes = 320 * bytesPerMiB
+const minVideoAggregateBytes = 400 * bytesPerMiB
+const maxVideoAggregateBytes = 1.1 * 1024 * bytesPerMiB
+const maxShortVideoBytes = 80 * bytesPerMiB
+const maxVlogVideoBytes = 750 * bytesPerMiB
+
+const expectedVideoAssets = [
+  "gh010090",
+  "gh010091",
+  "gh010092",
+  "gh010093",
+  "gh010096",
+  "gh010103",
+  "gh010105",
+  "gh010110",
+  "gh010116",
+  "gh010124",
+  "gh010130",
+  "gh010137",
+  "gh010141",
+  "gh010146",
+  "gh010154",
+  "gh010173",
+  "gh010230",
+  "gh010246",
+  "gh010263",
+  "one-leaf-two-millennia"
+] as const
+
+const expectedPhotoAssets = [
+  "a-moment-at-the-tea-table.jpg",
+  "a-retreat-for-wellbeing.jpg",
+  "ancient-archway-in-the-woods.jpg",
+  "tea-garden-in-mist.jpg",
+  "world-tea-culture-museum.jpg"
+] as const
+
+const expectedPosterPages = {
+  "origin-of-tea": ["/media/posters/origin-of-tea.png"],
+  "tea-and-nature-in-harmony": [
+    "/media/posters/tea-and-nature-01.png",
+    "/media/posters/tea-and-nature-02.png"
+  ],
+  "tea-picking-through-the-solar-terms": [
+    "/media/posters/solar-terms-picking-01.png",
+    "/media/posters/solar-terms-picking-02.png"
+  ],
+  "chinese-tea-hospitality": [
+    "/media/posters/tea-hospitality-01.png",
+    "/media/posters/tea-hospitality-02.png"
+  ]
+} as const
+
+const expectedPosterThumbnails = {
+  "origin-of-tea": "/media/posters/origin-of-tea-thumb.webp",
+  "tea-and-nature-in-harmony": "/media/posters/tea-and-nature-thumb.webp",
+  "tea-picking-through-the-solar-terms": "/media/posters/solar-terms-picking-thumb.webp",
+  "chinese-tea-hospitality": "/media/posters/tea-hospitality-thumb.webp"
+} as const
+
+const expectedSlugs = [
+  "one-leaf-two-millennia",
+  "mengding-mountain-gateway",
+  "tea-ancestor-hometown-signposts",
+  "tea-summit-landmark",
+  "national-tourist-attraction-marker",
+  "waterfall-and-lily-pond",
+  "valley-overlook",
+  "early-summer-tea-garden",
+  "ancient-tea-tree-of-mengding",
+  "tea-garden-in-mist",
+  "tea-ancestor-relief",
+  "forest-inscription",
+  "forest-stone-steps",
+  "red-ribbons-of-wishes",
+  "red-gate-of-mengding",
+  "visitors-at-the-mountain-gate",
+  "dragon-carved-rock-wall",
+  "new-tea-shoots",
+  "sorting-fresh-leaves",
+  "finished-tea-examined",
+  "ancient-archway-in-the-woods",
+  "world-tea-culture-museum",
+  "a-moment-at-the-tea-table",
+  "tea-garden-in-mist-photo",
+  "a-retreat-for-wellbeing-photo",
+  "origin-of-tea",
+  "tea-and-nature-in-harmony",
+  "tea-picking-through-the-solar-terms",
+  "chinese-tea-hospitality"
+] as const
+
+const allowedCategories = new Set([
+  "景区地标 / Mountain Landmarks",
+  "山水茶园 / Mountain & Tea Gardens",
+  "茶事劳作 / Tea Work",
+  "茶文化遗产 / Tea Heritage",
+  "山间人文 / Mountain Life"
+])
 
 function getLocalMediaPath(mediaUrl: string): string {
   const pathname = new URL(mediaUrl, "https://local-media.invalid").pathname
@@ -35,49 +130,6 @@ function getLocalMediaPath(mediaUrl: string): string {
   assert.notEqual(mediaPathIndex, -1, `Expected a /media/ path: ${mediaUrl}`)
   return pathname.slice(mediaPathIndex)
 }
-
-const expectedVideoTitles = [
-  ["GH010090", "蒙顶山门", "Mengding Mountain Gateway"],
-  ["GH010091", "茶祖故里路标", "Tea Ancestor Hometown Signposts"],
-  ["GH010092", "茶顶地标", "Tea Summit Landmark"],
-  ["GH010093", "国家级旅游景区碑", "National Tourist Attraction Marker"],
-  ["GH010096", "瀑布与睡莲", "Waterfall and Lily Pond"],
-  ["GH010103", "山谷远眺", "Valley Overlook"],
-  ["GH010105", "初夏茶园", "Early Summer Tea Garden"],
-  ["GH010110", "蒙顶古茶树", "Ancient Tea Tree of Mengding"],
-  ["GH010116", "云岚茶园", "Tea Garden in Mist"],
-  ["GH010120", "上山由此去", "Way Up the Mountain"],
-  ["GH010124", "茶祖浮雕", "Tea Ancestor Relief"],
-  ["GH010130", "山林题刻", "Forest Inscription"],
-  ["GH010137", "林间石阶", "Forest Stone Steps"],
-  ["GH010141", "祈愿红绸", "Red Ribbons of Wishes"],
-  ["GH010146", "蒙顶红门", "Red Gate of Mengding"],
-  ["GH010154", "山门来客", "Visitors at the Mountain Gate"],
-  ["GH010173", "龙纹石壁", "Dragon Carved Rock Wall"],
-  ["GH010199", "人间养生场", "A Retreat for Wellbeing"],
-  ["GH010219", "采一芽", "Picking New Tea Shoots"],
-  ["GH010230", "茶芽初展", "New Tea Shoots"],
-  ["GH010246", "鲜叶分拣", "Sorting Fresh Leaves"],
-  ["GH010258", "鲜叶在手", "Fresh Leaves in Hand"],
-  ["GH010263", "成茶观形", "Finished Tea, Examined"]
-] as const
-
-const expectedPhotoTitles = [
-  ["1f42c25e", "林间古牌坊", "Ancient Archway in the Woods"],
-  ["21d77d9c", "茶园远眺", "Tea Garden Overlook"],
-  ["2795f4d9", "世界茶文化博物馆", "World Tea Culture Museum"],
-  ["2fdbff1b", "茶席一刻", "A Moment at the Tea Table"],
-  ["44f85692", "云岚茶园", "Tea Garden in Mist"],
-  ["e34e0fb6", "人间养生场", "A Retreat for Wellbeing"]
-] as const
-
-const allowedCategories = new Set([
-  "景区地标 / Mountain Landmarks",
-  "山水茶园 / Mountain & Tea Gardens",
-  "茶事劳作 / Tea Work",
-  "茶文化遗存 / Tea Heritage",
-  "山间人文 / Mountain Life"
-])
 
 function getMp4DurationInSeconds(filePath: string): number {
   const descriptor = openSync(filePath, "r")
@@ -134,36 +186,52 @@ function getMp4DurationInSeconds(filePath: string): number {
   }
 }
 
-test("media index contains the complete 29-record archive with unique slugs and home order", () => {
+test("media index contains the exact refreshed 29-record archive", () => {
   const slugs = mediaItems.map((item) => item.slug)
   const homeOrders = mediaItems.map((item) => item.homeOrder)
 
   assert.equal(mediaItems.length, 29)
-  assert.equal(new Set(slugs).size, 29)
+  assert.deepEqual(new Set(slugs), new Set(expectedSlugs))
   assert.equal(new Set(homeOrders).size, 29)
   assert.ok(mediaItems.every((item) => item.titleZh.trim().length > 0))
   assert.ok(mediaItems.every((item) => item.titleEn.trim().length > 0))
 })
 
-test("media index has 23 video records and 6 photo records", () => {
-  const videos = mediaItems.filter((item) => item.kind === "video")
-  const photos = mediaItems.filter((item) => item.kind === "photo")
-
-  assert.equal(videos.length, 23)
-  assert.equal(photos.length, 6)
+test("media index has 20 video, 5 photo, and 4 poster records", () => {
+  assert.equal(mediaItems.filter((item) => item.kind === "video").length, 20)
+  assert.equal(mediaItems.filter((item) => item.kind === "photo").length, 5)
+  assert.equal(mediaItems.filter((item) => item.kind === "poster").length, 4)
 })
 
-test("featured home media is the five-part archive story in narrative order", () => {
-  const featured = getFeaturedMedia()
+test("one leaf two millennia has the approved bilingual Vlog metadata", () => {
+  const vlog = mediaItems.find((item) => item.slug === "one-leaf-two-millennia")
 
-  assert.equal(featured.length, 5)
-  assert.equal(new Set(featured.map((item) => item.homeOrder)).size, 5)
+  assert.ok(vlog)
+  assert.equal(vlog.kind, "video")
+  assert.equal(vlog.titleZh, "一叶千年")
+  assert.equal(vlog.titleEn, "One Leaf, Two Millennia")
+  assert.equal(vlog.categoryZh, "茶文化遗产")
+  assert.equal(vlog.categoryEn, "Tea Heritage")
+  assert.equal(
+    vlog.descriptionZh,
+    "从公元前53年的起源叙事、云雾茶园与皇茶园，到手工采制和当代博物馆，串起蒙顶茶跨越两千年的传承。"
+  )
+  assert.equal(
+    vlog.descriptionEn,
+    "From its origin story in 53 BCE through misty tea gardens, imperial cultivation, handcraft, and the modern museum, the film traces two millennia of Mengding tea heritage."
+  )
+  assert.equal(vlog.duration, "485.0s")
+  assert.equal(getLocalMediaPath(vlog.video), "/media/videos/one-leaf-two-millennia.mp4")
+  assert.equal(getLocalMediaPath(vlog.poster), "/media/posters/one-leaf-two-millennia.jpg")
+})
+
+test("featured home media is the approved five-part heritage story", () => {
   assert.deepEqual(
-    featured.map((item) => item.slug),
+    getFeaturedMedia().map((item) => item.slug),
     [
-      "mengding-mountain-gateway",
-      "tea-garden-overlook",
-      "picking-new-tea-shoots",
+      "one-leaf-two-millennia",
+      "ancient-tea-tree-of-mengding",
+      "red-gate-of-mengding",
       "sorting-fresh-leaves",
       "tea-ancestor-relief"
     ]
@@ -173,46 +241,63 @@ test("featured home media is the five-part archive story in narrative order", ()
 test("media kind labels are bilingual", () => {
   assert.equal(getMediaKindLabel("video"), "视频 / Video")
   assert.equal(getMediaKindLabel("photo"), "图片 / Photo")
+  assert.equal(getMediaKindLabel("poster"), "海报 / Poster")
 })
 
-test("media index preserves the approved source-to-title matrix", () => {
-  const videos = mediaItems.filter((item) => item.kind === "video")
-  const photos = mediaItems.filter((item) => item.kind === "photo")
-
-  assert.deepEqual(
-    videos.map((item) => [
-      getLocalMediaPath(item.video)
-        .replace("/media/videos/", "")
-        .replace(".mp4", "")
-        .toUpperCase(),
-      item.titleZh,
-      item.titleEn
-    ]),
-    expectedVideoTitles
-  )
-  assert.deepEqual(
-    photos.map((item) => [
-      item.archiveId.replace("MDS-PH-", "").toLowerCase(),
-      item.titleZh,
-      item.titleEn
-    ]),
-    expectedPhotoTitles
-  )
-})
-
-test("media index uses only the approved bilingual categories", () => {
+test("every record uses an approved bilingual category and reviewed rights", () => {
   assert.ok(
     mediaItems.every((item) =>
       allowedCategories.has(`${item.categoryZh} / ${item.categoryEn}`)
     )
   )
+  assert.ok(
+    mediaItems.every(
+      (item) => item.rights === "权利状态已审核 / Rights status reviewed"
+    )
+  )
 })
 
-test("video filter only returns video records", () => {
-  const videos = filterMedia(mediaItems, { kind: "video" })
+test("the refreshed catalog uses the exact approved local assets", () => {
+  const videos = mediaItems.filter((item) => item.kind === "video")
+  const photos = mediaItems.filter((item) => item.kind === "photo")
 
-  assert.equal(videos.length, 23)
-  assert.ok(videos.every((item) => item.kind === "video"))
+  assert.deepEqual(
+    new Set(
+      videos.map((item) =>
+        getLocalMediaPath(item.video)
+          .replace("/media/videos/", "")
+          .replace(".mp4", "")
+      )
+    ),
+    new Set(expectedVideoAssets)
+  )
+  assert.deepEqual(
+    new Set(
+      photos.map((item) => getLocalMediaPath(item.poster).replace("/media/photos/", ""))
+    ),
+    new Set(expectedPhotoAssets)
+  )
+})
+
+test("poster records expose their exact full-resolution page sets", () => {
+  const posters = mediaItems.filter((item) => item.kind === "poster")
+
+  for (const item of posters) {
+    const slug = item.slug as keyof typeof expectedPosterPages
+    assert.equal(item.categoryZh, "茶文化遗产")
+    assert.equal(item.categoryEn, "Tea Heritage")
+    assert.equal(getLocalMediaPath(item.poster), expectedPosterThumbnails[slug])
+    assert.deepEqual(item.pages.map(getLocalMediaPath), expectedPosterPages[slug])
+    assert.equal(item.assetCount, item.pages.length)
+  }
+})
+
+test("kind filters only return matching archive records", () => {
+  for (const kind of ["video", "photo", "poster"] as const) {
+    const items = filterMedia(mediaItems, { kind })
+    assert.ok(items.length > 0)
+    assert.ok(items.every((item) => item.kind === kind))
+  }
 })
 
 test("query and category filters only return matching archive records", () => {
@@ -220,7 +305,13 @@ test("query and category filters only return matching archive records", () => {
   const teaWork = filterMedia(mediaItems, { category: "Tea Work" })
 
   assert.ok(queried.length > 0)
-  assert.ok(queried.every((item) => `${item.titleEn} ${item.categoryEn} ${item.tags.join(" ")}`.toLowerCase().includes("tea garden")))
+  assert.ok(
+    queried.every((item) =>
+      `${item.titleEn} ${item.categoryEn} ${item.tags.join(" ")}`
+        .toLowerCase()
+        .includes("tea garden")
+    )
+  )
   assert.ok(teaWork.length > 0)
   assert.ok(teaWork.every((item) => item.categoryEn === "Tea Work"))
 })
@@ -230,15 +321,15 @@ test("media categories are unique and source ordered", () => {
 
   assert.equal(categories.length, new Set(categories.map((category) => category.value)).size)
   assert.equal(categories[0]?.value, mediaItems[0]?.categoryEn)
-  assert.ok(categories.some((category) => category.value === "Tea Work" && category.count > 0))
+  assert.ok(
+    categories.some((category) => category.value === "Tea Work" && category.count > 0)
+  )
 })
 
-test("media poster and video paths resolve to local public files", () => {
+test("every catalog path resolves to a local public file", () => {
   for (const item of mediaItems) {
     const posterPath = getLocalMediaPath(item.poster)
 
-    assert.ok(posterPath.startsWith(item.kind === "video" ? "/media/posters/" : "/media/photos/"))
-    assert.ok(posterPath.endsWith(".jpg"))
     assert.ok(
       existsSync(resolve(publicDirectory, posterPath.slice(1))),
       `Missing poster for ${item.slug}: ${item.poster}`
@@ -246,62 +337,80 @@ test("media poster and video paths resolve to local public files", () => {
 
     if (item.kind === "video") {
       const videoPath = getLocalMediaPath(item.video)
-
       assert.ok(videoPath.startsWith("/media/videos/"))
+      assert.ok(videoPath.endsWith(".mp4"))
       assert.ok(
         existsSync(resolve(publicDirectory, videoPath.slice(1))),
         `Missing video for ${item.slug}: ${item.video}`
       )
+    } else if (item.kind === "photo") {
+      assert.ok(posterPath.startsWith("/media/photos/"))
+      assert.ok(posterPath.endsWith(".jpg"))
+    } else {
+      assert.ok(posterPath.startsWith("/media/posters/"))
+      assert.ok(posterPath.endsWith(".webp"))
+      for (const page of item.pages) {
+        const pagePath = getLocalMediaPath(page)
+        assert.ok(pagePath.endsWith(".png"))
+        assert.ok(existsSync(resolve(publicDirectory, pagePath.slice(1))))
+      }
     }
   }
 })
 
-test("public media contains exactly the approved photo, video, and poster assets", () => {
+test("public media contains exactly the approved refreshed assets", () => {
   const photos = readdirSync(resolve(publicDirectory, "media/photos"), { withFileTypes: true })
     .filter((entry) => entry.isFile())
+    .map((entry) => entry.name)
+    .sort()
   const videos = readdirSync(resolve(publicDirectory, "media/videos"), { withFileTypes: true })
     .filter((entry) => entry.isFile())
+    .map((entry) => entry.name)
+    .sort()
   const posters = readdirSync(resolve(publicDirectory, "media/posters"), { withFileTypes: true })
     .filter((entry) => entry.isFile())
+    .map((entry) => entry.name)
+    .sort()
 
-  assert.equal(photos.length, 6)
-  assert.equal(videos.length, 23)
-  assert.equal(posters.length, 23)
-  assert.ok(photos.every((entry) => entry.name.endsWith(".jpg")))
-  assert.ok(videos.every((entry) => entry.name.endsWith(".mp4")))
-  assert.ok(posters.every((entry) => entry.name.endsWith(".jpg")))
-  assert.equal(new Set(posters.map((entry) => entry.name)).size, 23)
+  const expectedPosters = [
+    ...expectedVideoAssets.map((asset) => `${asset}.jpg`),
+    ...Object.values(expectedPosterThumbnails).map((path) => path.split("/").at(-1)!),
+    ...Object.values(expectedPosterPages).flat().map((path) => path.split("/").at(-1)!)
+  ].sort()
+
+  assert.deepEqual(photos, [...expectedPhotoAssets].sort())
+  assert.deepEqual(videos, expectedVideoAssets.map((asset) => `${asset}.mp4`).sort())
+  assert.deepEqual(posters, expectedPosters)
 })
 
-test("delivery videos stay within the high-quality web delivery envelope", () => {
+test("delivery videos stay within the refreshed high-quality size envelope", () => {
   const videosDirectory = resolve(publicDirectory, "media/videos")
-  const videos = readdirSync(videosDirectory, { withFileTypes: true })
+  const videoSizes = readdirSync(videosDirectory, { withFileTypes: true })
     .filter((entry) => entry.isFile() && entry.name.endsWith(".mp4"))
+    .map((entry) => ({
+      name: entry.name,
+      bytes: statSync(resolve(videosDirectory, entry.name)).size
+    }))
+  const aggregateBytes = videoSizes.reduce((total, video) => total + video.bytes, 0)
 
-  assert.equal(videos.length, 23)
-
-  const videoSizes = videos.map((entry) => ({
-    name: entry.name,
-    bytes: statSync(resolve(videosDirectory, entry.name)).size
-  }))
-  const aggregateBytes = videoSizes.reduce(
-    (totalBytes, video) => totalBytes + video.bytes,
-    0
-  )
-
+  assert.equal(videoSizes.length, 20)
   assert.ok(
-    aggregateBytes >= minHighQualityDeliveryVideoAggregateBytes,
-    `Video aggregate is ${(aggregateBytes / bytesPerMiB).toFixed(1)} MiB, below the 150 MiB high-quality delivery floor`
+    aggregateBytes >= minVideoAggregateBytes,
+    `Video aggregate is ${(aggregateBytes / bytesPerMiB).toFixed(1)} MiB, below 400 MiB`
   )
   assert.ok(
-    aggregateBytes <= maxHighQualityDeliveryVideoAggregateBytes,
-    `Video aggregate is ${(aggregateBytes / bytesPerMiB).toFixed(1)} MiB, above the 320 MiB high-quality delivery ceiling`
+    aggregateBytes <= maxVideoAggregateBytes,
+    `Video aggregate is ${(aggregateBytes / bytesPerMiB).toFixed(1)} MiB, above 1.1 GiB`
   )
 
   for (const video of videoSizes) {
+    const ceiling =
+      video.name === "one-leaf-two-millennia.mp4"
+        ? maxVlogVideoBytes
+        : maxShortVideoBytes
     assert.ok(
-      video.bytes <= maxHighQualityDeliveryVideoBytes,
-      `${video.name} exceeds the 80 MiB high-quality delivery ceiling`
+      video.bytes <= ceiling,
+      `${video.name} exceeds its ${(ceiling / bytesPerMiB).toFixed(0)} MiB ceiling`
     )
   }
 })
@@ -309,14 +418,22 @@ test("delivery videos stay within the high-quality web delivery envelope", () =>
 test("media records match their runtime kind contract", () => {
   const photos = mediaItems.filter((item) => item.kind === "photo")
   const videos = mediaItems.filter((item) => item.kind === "video")
+  const posters = mediaItems.filter((item) => item.kind === "poster")
 
-  assert.ok(photos.every((item) => item.video === undefined))
+  assert.ok(photos.every((item) => item.video === undefined && item.duration === undefined))
+  assert.ok(
+    posters.every(
+      (item) =>
+        item.video === undefined &&
+        item.duration === undefined &&
+        item.pages.length > 0
+    )
+  )
   assert.ok(
     videos.every(
       (item) =>
         item.video &&
         item.duration &&
-        item.duration !== "00:00" &&
         /^\d+(?:\.\d+)?s$/.test(item.duration) &&
         Number.parseFloat(item.duration) > 0
     )
@@ -327,7 +444,6 @@ test("media records match their runtime kind contract", () => {
       resolve(publicDirectory, getLocalMediaPath(item.video).slice(1))
     )
 
-    assert.ok(sourceDuration > 0, `Video has no duration: ${item.slug}`)
     assert.equal(
       Math.round(sourceDuration * 10) / 10,
       Number.parseFloat(item.duration),
