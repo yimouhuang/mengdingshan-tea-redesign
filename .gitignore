@@ -21,6 +21,7 @@
 # Internal planning, rollback, and visual-review artifacts stay local.
 /.superpowers/
 /docs/superpowers/
+/.worktrees/
 
 # TypeScript incremental build data
 *.tsbuildinfo
