@@ -5,6 +5,16 @@ const MEDIA_FAVORITES_LIMIT = 100
 const MEDIA_FAVORITES_RAW_LENGTH_LIMIT = 50_000
 const MEDIA_FAVORITES_SCAN_LIMIT = 1_000
 
+export function getMediaFavoritesStorage(
+  browserWindow: Pick<Window, "localStorage">
+): Storage | null {
+  try {
+    return browserWindow.localStorage
+  } catch {
+    return null
+  }
+}
+
 export function parseMediaFavorites(
   raw: string | null,
   knownSlugs: readonly string[]

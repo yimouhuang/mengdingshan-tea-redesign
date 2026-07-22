@@ -1,6 +1,7 @@
 import assert from "node:assert/strict"
 import test from "node:test"
 
+import * as mediaFavorites from "../lib/media-favorites"
 import {
   MEDIA_FAVORITES_STORAGE_KEY,
   buildMediaShareData,
@@ -9,6 +10,24 @@ import {
   shouldShowNoSavedMedia,
   toggleMediaFavorite
 } from "../lib/media-favorites"
+
+test("safe storage access returns null when the localStorage getter throws", () => {
+  const getMediaFavoritesStorage = (
+    mediaFavorites as typeof mediaFavorites & {
+      getMediaFavoritesStorage?: (browserWindow: Pick<Window, "localStorage">) => Storage | null
+    }
+  ).getMediaFavoritesStorage
+  const blockedWindow = Object.create(null) as Pick<Window, "localStorage">
+
+  Object.defineProperty(blockedWindow, "localStorage", {
+    get() {
+      throw new DOMException("Storage access is blocked", "SecurityError")
+    }
+  })
+
+  assert.equal(typeof getMediaFavoritesStorage, "function")
+  assert.equal(getMediaFavoritesStorage?.(blockedWindow), null)
+})
 
 test("parseMediaFavorites returns an empty list for absent or invalid input", () => {
   assert.deepEqual(parseMediaFavorites(null, ["known"]), [])

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import {
   MEDIA_FAVORITES_CHANGED_EVENT,
   buildMediaShareData,
+  getMediaFavoritesStorage,
   readMediaFavorites,
   toggleMediaFavorite
 } from "@/lib/media-favorites"
@@ -26,12 +27,20 @@ export function MediaActions({
   const [feedback, setFeedback] = useState("")
 
   useEffect(() => {
-    setIsFavorite(readMediaFavorites(window.localStorage, knownSlugs).includes(slug))
+    const storage = getMediaFavoritesStorage(window)
+    setIsFavorite(storage ? readMediaFavorites(storage, knownSlugs).includes(slug) : false)
   }, [knownSlugs, slug])
 
   function handleFavorite() {
+    const storage = getMediaFavoritesStorage(window)
+
+    if (!storage) {
+      setFeedback("收藏失败，请检查浏览器存储 / Unable to save favorite.")
+      return
+    }
+
     const result = toggleMediaFavorite(
-      window.localStorage,
+      storage,
       slug,
       knownSlugs
     )

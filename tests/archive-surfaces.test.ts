@@ -156,8 +156,10 @@ test("archive surface delegates detail favorite and share actions to the client 
 
 test("favorite action is an accessible client control with same-tab feedback", () => {
   assert.match(mediaActionsSource, /^"use client"/)
-  assert.match(mediaActionsSource, /readMediaFavorites\(window\.localStorage, knownSlugs\)/)
-  assert.match(mediaActionsSource, /toggleMediaFavorite\(\s*window\.localStorage,\s*slug,\s*knownSlugs\s*\)/)
+  assert.match(mediaActionsSource, /getMediaFavoritesStorage\(window\)/)
+  assert.match(mediaActionsSource, /readMediaFavorites\(storage, knownSlugs\)/)
+  assert.match(mediaActionsSource, /toggleMediaFavorite\(\s*storage,\s*slug,\s*knownSlugs\s*\)/)
+  assert.doesNotMatch(mediaActionsSource, /window\.localStorage/)
   assert.match(mediaActionsSource, /aria-pressed=\{isFavorite\}/)
   assert.match(mediaActionsSource, /☆ 加入收藏/)
   assert.match(mediaActionsSource, /★ 已收藏 \/ Saved/)
@@ -166,6 +168,19 @@ test("favorite action is an accessible client control with same-tab feedback", (
   assert.match(mediaActionsSource, /if \(!result\.persisted\)[\s\S]*?收藏失败，请检查浏览器存储 \/ Unable to save favorite\.[\s\S]*?return/)
   assert.match(mediaActionsSource, /setIsFavorite\(result\.isFavorite\)/)
   assert.match(mediaActionsSource, /new CustomEvent\(MEDIA_FAVORITES_CHANGED_EVENT,[\s\S]*?detail: \{ favorites: result\.favorites \}/)
+})
+
+test("favorite action reports the existing failure when the localStorage getter is blocked", () => {
+  const handlerStart = mediaActionsSource.indexOf("function handleFavorite()")
+  const handlerEnd = mediaActionsSource.indexOf("async function handleShare()", handlerStart)
+
+  assert.notEqual(handlerStart, -1, "Missing favorite handler")
+  assert.notEqual(handlerEnd, -1, "Missing favorite handler end")
+
+  const handler = mediaActionsSource.slice(handlerStart, handlerEnd)
+
+  assert.match(handler, /const storage = getMediaFavoritesStorage\(window\)/)
+  assert.match(handler, /if \(!storage\)[\s\S]*?Unable to save favorite\.[\s\S]*?return/)
 })
 
 test("share action delegates real browser behavior and maps every result", () => {

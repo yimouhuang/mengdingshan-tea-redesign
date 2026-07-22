@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react"
 import {
   MEDIA_FAVORITES_CHANGED_EVENT,
   MEDIA_FAVORITES_STORAGE_KEY,
+  getMediaFavoritesStorage,
   parseMediaFavorites,
   readMediaFavorites,
   shouldShowNoSavedMedia
@@ -42,12 +43,14 @@ export function MediaLibraryBrowser() {
   const knownSlugs = useMemo(() => mediaItems.map((item) => item.slug), [])
 
   useEffect(() => {
+    const storage = getMediaFavoritesStorage(window)
+
     function syncFavorites() {
-      setFavoriteSlugs(new Set(readMediaFavorites(window.localStorage, knownSlugs)))
+      setFavoriteSlugs(new Set(storage ? readMediaFavorites(storage, knownSlugs) : []))
     }
 
     function handleStorage(event: StorageEvent) {
-      if (event.storageArea && event.storageArea !== window.localStorage) {
+      if (event.storageArea && event.storageArea !== storage) {
         return
       }
 

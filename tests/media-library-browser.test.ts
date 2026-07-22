@@ -116,9 +116,11 @@ test("favorite library filter intersects the existing archive filters without ch
 test("favorite library state synchronizes from storage and same-tab changes with cleanup", () => {
   assert.ok(librarySource.includes("MEDIA_FAVORITES_STORAGE_KEY"))
   assert.ok(librarySource.includes("MEDIA_FAVORITES_CHANGED_EVENT"))
-  assert.match(librarySource, /readMediaFavorites\(window\.localStorage, knownSlugs\)/)
+  assert.match(librarySource, /const storage = getMediaFavoritesStorage\(window\)/)
+  assert.match(librarySource, /storage \? readMediaFavorites\(storage, knownSlugs\) : \[\]/)
+  assert.doesNotMatch(librarySource, /window\.localStorage/)
   assert.match(librarySource, /addEventListener\("storage", handleStorage\)/)
-  assert.match(librarySource, /event\.storageArea && event\.storageArea !== window\.localStorage/)
+  assert.match(librarySource, /event\.storageArea && event\.storageArea !== storage/)
   assert.match(librarySource, /event\.key === null[\s\S]*?syncFavorites\(\)[\s\S]*?return/)
   assert.match(librarySource, /event\.key !== MEDIA_FAVORITES_STORAGE_KEY/)
   assert.match(librarySource, /addEventListener\(MEDIA_FAVORITES_CHANGED_EVENT, handleFavoritesChanged\)/)
