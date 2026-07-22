@@ -57,7 +57,7 @@ export function MediaLibraryBrowser() {
           <div>
             <p className="text-xs tracking-[.2em] text-[#d6b45a]">MEDIA LIBRARY</p>
             <h1 className="mt-2 font-display text-4xl">影像库 <span className="text-2xl text-[#eee9de]/75">/ Media Library</span></h1>
-            <p className="mt-3 text-sm text-[#eee9de]/62">浏览蒙顶山茶的图片与视频档案 / Browse the image and video archive.</p>
+            <p className="mt-3 text-sm text-[#eee9de]/62">浏览蒙顶山茶的图片、视频与海报档案 / Browse the photo, video, and poster archive.</p>
           </div>
           <Link
             href="/"

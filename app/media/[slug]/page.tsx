@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArchiveNav } from "@/components/archive-nav"
-import { getMediaItem, getMediaKindLabel, getMediaNeighbors, getRelatedMedia, mediaItems } from "@/lib/media"
+import { getMediaItem, getMediaNeighbors, getRelatedMedia, mediaItems } from "@/lib/media"
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -48,7 +48,7 @@ export default async function MediaPage({ params }: Props) {
                   <div key={page} className="relative aspect-[210/297] overflow-hidden bg-black">
                     <Image
                       src={page}
-                      alt={`${item.titleZh} ${index + 1}`}
+                      alt={`${item.titleZh} / ${item.titleEn}，第 ${index + 1} 页 / page ${index + 1}`}
                       fill
                       sizes="(min-width: 1280px) 35vw, 100vw"
                       className="object-contain"
@@ -70,18 +70,17 @@ export default async function MediaPage({ params }: Props) {
             )}
             <div className="flex items-center justify-between border-t border-white/15 p-4 text-sm">
               <span>
-                {getMediaKindLabel(item.kind)}
                 {item.kind === "video"
-                  ? ` · ${item.duration}`
+                  ? `视频 Video · ${item.duration}`
                   : item.kind === "poster"
-                    ? ` · ${item.assetCount ?? item.pages.length} 页 / pages`
-                    : ""}
+                    ? `海报 Poster · ${item.pages.length === 1 ? "1 页 / page" : `${item.assetCount ?? item.pages.length} 页 / pages`}`
+                    : "图片 Photo"}
               </span>
               <span className="text-[#b6dc9e]">环境导览需接入音轨</span>
             </div>
           </div>
           <aside className="rounded-2xl border border-white/15 bg-white/[.035] p-6">
-            <p className="text-sm text-[#b6dc9e]">{getMediaKindLabel(item.kind)}</p>
+            <p className="text-sm text-[#b6dc9e]">{item.kind === "video" ? "视频 Video" : item.kind === "poster" ? "海报 Poster" : "图片 Photos"}</p>
             <h1 className="mt-3 font-display text-4xl">{item.titleZh}</h1>
             <p className="mt-2 font-display text-2xl text-[#eee9de]/85">{item.titleEn}</p>
             <dl className="mt-6 grid grid-cols-2 gap-4 border-y border-white/12 py-5 text-sm">

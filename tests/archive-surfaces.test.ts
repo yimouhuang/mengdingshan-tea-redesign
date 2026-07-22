@@ -91,14 +91,27 @@ test("poster detail renders every portrait page in a responsive one-or-two-colum
   assert.match(mediaPageSource, /item\.pages\.length === 1[\s\S]*?mx-auto max-w-2xl[\s\S]*?md:grid-cols-2/)
   assert.match(mediaPageSource, /relative aspect-\[210\/297\] overflow-hidden bg-black/)
   assert.match(mediaPageSource, /src=\{page\}/)
-  assert.match(mediaPageSource, /alt=\{`\$\{item\.titleZh\} \$\{index \+ 1\}`\}/)
   assert.match(mediaPageSource, /sizes="\(min-width: 1280px\) 35vw, 100vw"/)
 })
 
-test("media detail labels kinds centrally and reports poster page count", () => {
-  assert.match(mediaPageSource, /getMediaKindLabel\(item\.kind\)/)
-  assert.match(mediaPageSource, /item\.assetCount \?\? item\.pages\.length/)
-  assert.match(mediaPageSource, /item\.duration/)
+test("media detail preserves established video and photo copy while labeling posters separately", () => {
+  assert.match(mediaPageSource, /`视频 Video · \$\{item\.duration\}`/)
+  assert.match(mediaPageSource, /"图片 Photo"/)
+  assert.match(mediaPageSource, /item\.kind === "video"\s*\?\s*"视频 Video"/)
+  assert.match(mediaPageSource, /item\.kind === "poster"\s*\?\s*"海报 Poster"/)
+  assert.match(mediaPageSource, /"图片 Photos"/)
+  assert.doesNotMatch(mediaPageSource, /getMediaKindLabel/)
+})
+
+test("poster detail uses singular page copy and bilingual page alt text", () => {
+  assert.match(
+    mediaPageSource,
+    /item\.pages\.length === 1\s*\?\s*"1 页 \/ page"\s*:\s*`\$\{item\.assetCount \?\? item\.pages\.length\} 页 \/ pages`/
+  )
+  assert.match(
+    mediaPageSource,
+    /alt=\{`\$\{item\.titleZh\} \/ \$\{item\.titleEn\}，第 \$\{index \+ 1\} 页 \/ page \$\{index \+ 1\}`\}/
+  )
 })
 
 test("related poster thumbnails fit while other media keeps its crop", () => {

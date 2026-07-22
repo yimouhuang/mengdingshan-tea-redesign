@@ -82,3 +82,10 @@ test("library fits poster cards without changing photo and video crop behavior",
     /className=\{item\.kind === "poster"\s*\?\s*"object-contain bg-\[#080b08\] transition duration-500 group-hover:scale-\[1\.02\]"\s*:\s*"object-cover transition duration-500 group-hover:scale-105"\s*\}/
   )
 })
+
+test("library introduction includes photo, video, and poster records", () => {
+  assert.match(
+    librarySource,
+    /浏览蒙顶山茶的图片、视频与海报档案 \/ Browse the photo, video, and poster archive\./
+  )
+})
