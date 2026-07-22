@@ -109,7 +109,7 @@ test("favorite library filter intersects the existing archive filters without ch
   )
 
   assert.match(favoriteButton, /收藏 \/ Favorites/)
-  assert.match(favoriteButton, /setFavoritesOnly/)
+  assert.match(favoriteButton, /replaceLibraryState\(\{ favoritesOnly: !favoritesOnly \}\)/)
   assert.doesNotMatch(favoriteButton, /setKind/)
 })
 
@@ -130,10 +130,21 @@ test("favorite library state synchronizes from storage and same-tab changes with
 
 test("favorite library filter participates in default state, reset, and empty copy", () => {
   assert.match(librarySource, /const isDefault =[\s\S]*?!favoritesOnly/)
-  assert.match(librarySource, /function resetFilters\(\)[\s\S]*?setFavoritesOnly\(false\)/)
+  assert.match(librarySource, /function resetFilters\(\)[\s\S]*?favoritesOnly: false/)
   assert.match(librarySource, /shouldShowNoSavedMedia\(favoritesOnly, favoriteSlugs\)/)
   assert.match(librarySource, /showNoSavedMedia \? "尚未收藏影像 \/ No saved records" : "未找到匹配档案 \/ No matching records"/)
   assert.match(librarySource, /尚未收藏影像 \/ No saved records/)
   assert.match(librarySource, /收藏仅保存在当前浏览器 \/ Favorites stay in this browser\./)
   assert.match(librarySource, /No matching records/)
+})
+
+test("library cards carry the current URL view state into media details", () => {
+  assert.match(librarySource, /readLibraryState\(new URLSearchParams\(window\.location\.search\)\)/)
+  assert.match(librarySource, /window\.history\.replaceState\(null, "", getLibraryHref\(nextState\)\)/)
+  assert.match(librarySource, /href=\{getMediaDetailHref\(item\.slug, libraryState\)\}/)
+})
+
+test("library restores URL view state before its first browser paint", () => {
+  assert.match(librarySource, /useLayoutEffect/)
+  assert.match(librarySource, /useLayoutEffect\(\(\) => \{[\s\S]*?syncLibraryState\(\)/)
 })

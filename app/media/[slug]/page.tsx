@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArchiveNav } from "@/components/archive-nav"
+import { MediaLibraryBackLink } from "@/components/media-library-back-link"
 import { MediaActions } from "@/components/media-actions"
 import { getMediaItem, getMediaNeighbors, getRelatedMedia, mediaItems } from "@/lib/media"
 
@@ -23,7 +24,7 @@ export default async function MediaPage({ params }: Props) {
       <ArchiveNav />
       <section className="archive-container">
         <div className="flex flex-wrap justify-between gap-4 py-5 text-sm text-[#eee9de]/72">
-          <Link href="/library">← 返回影像库 / Back to Media Library</Link>
+          <MediaLibraryBackLink />
           <span>{item.archiveId}</span>
           <span>
             <Link href={`/media/${neighbors.previous.slug}`}>上一条</Link>　

@@ -154,6 +154,11 @@ test("archive surface delegates detail favorite and share actions to the client 
   assert.doesNotMatch(mediaPageSource, /<button className="border border-white\/25 py-3">/)
 })
 
+test("media detail returns to the validated library URL carried by the selected card", () => {
+  assert.match(mediaPageSource, /from ["']@\/components\/media-library-back-link["']/)
+  assert.match(mediaPageSource, /<MediaLibraryBackLink \/>/)
+})
+
 test("favorite action is an accessible client control with same-tab feedback", () => {
   assert.match(mediaActionsSource, /^"use client"/)
   assert.match(mediaActionsSource, /getMediaFavoritesStorage\(window\)/)

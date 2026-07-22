@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useLayoutEffect, useMemo, useState } from "react"
 import {
   MEDIA_FAVORITES_CHANGED_EVENT,
   MEDIA_FAVORITES_STORAGE_KEY,
@@ -16,12 +16,15 @@ import {
   getMediaCategories,
   getMediaKindLabel,
   mediaItems,
-  type ArchiveFilter,
-  type MediaKind
+  type ArchiveFilter
 } from "@/lib/media"
-
-type LibraryKind = MediaKind | "all"
-type LibraryView = "grid" | "list"
+import {
+  getLibraryHref,
+  getMediaDetailHref,
+  readLibraryState,
+  type LibraryKind,
+  type LibraryState
+} from "@/lib/media-library-navigation"
 
 const libraryKindFilters: ReadonlyArray<{ value: LibraryKind; label: string }> = [
   { value: "all", label: "全部 / All" },
@@ -35,12 +38,31 @@ export function MediaLibraryBrowser() {
   const [category, setCategory] = useState("")
   const [kind, setKind] = useState<LibraryKind>("all")
   const [sort, setSort] = useState<NonNullable<ArchiveFilter["sort"]>>("latest")
-  const [view, setView] = useState<LibraryView>("grid")
+  const [view, setView] = useState<LibraryState["view"]>("grid")
   const [favoritesOnly, setFavoritesOnly] = useState(false)
   const [favoriteSlugs, setFavoriteSlugs] = useState<ReadonlySet<string>>(() => new Set())
 
   const categories = useMemo(() => getMediaCategories(mediaItems), [])
   const knownSlugs = useMemo(() => mediaItems.map((item) => item.slug), [])
+  const libraryState: LibraryState = { query, category, kind, sort, view, favoritesOnly }
+
+  useLayoutEffect(() => {
+    function syncLibraryState() {
+      const state = readLibraryState(new URLSearchParams(window.location.search))
+
+      setQuery(state.query)
+      setCategory(state.category)
+      setKind(state.kind)
+      setSort(state.sort)
+      setView(state.view)
+      setFavoritesOnly(state.favoritesOnly)
+    }
+
+    syncLibraryState()
+    window.addEventListener("popstate", syncLibraryState)
+
+    return () => window.removeEventListener("popstate", syncLibraryState)
+  }, [])
 
   useEffect(() => {
     const storage = getMediaFavoritesStorage(window)
@@ -110,13 +132,27 @@ export function MediaLibraryBrowser() {
     view === "grid" &&
     !favoritesOnly
 
+  function replaceLibraryState(changes: Partial<LibraryState>) {
+    const nextState = { ...libraryState, ...changes }
+
+    window.history.replaceState(null, "", getLibraryHref(nextState))
+    setQuery(nextState.query)
+    setCategory(nextState.category)
+    setKind(nextState.kind)
+    setSort(nextState.sort)
+    setView(nextState.view)
+    setFavoritesOnly(nextState.favoritesOnly)
+  }
+
   function resetFilters() {
-    setQuery("")
-    setCategory("")
-    setKind("all")
-    setSort("latest")
-    setView("grid")
-    setFavoritesOnly(false)
+    replaceLibraryState({
+      query: "",
+      category: "",
+      kind: "all",
+      sort: "latest",
+      view: "grid",
+      favoritesOnly: false
+    })
   }
 
   return (
@@ -143,7 +179,7 @@ export function MediaLibraryBrowser() {
               id="library-search"
               type="search"
               value={query}
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => replaceLibraryState({ query: event.target.value })}
               placeholder="搜索照片、视频、茶园或工艺 / Search archive"
               className="min-h-11 w-full border-b border-white/25 bg-transparent px-2 text-sm text-[#f3f0e5] placeholder:text-[#eee9de]/48 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#f2d37a]"
             />
@@ -154,7 +190,7 @@ export function MediaLibraryBrowser() {
                 key={value}
                 type="button"
                 aria-pressed={kind === value}
-                onClick={() => setKind(value)}
+                onClick={() => replaceLibraryState({ kind: value })}
                 className={`min-h-11 border px-3 py-2 text-sm transition active:translate-y-px ${kind === value ? "border-[#d6b45a]/70 bg-[#d6b45a]/10 text-[#f3d77d]" : "border-white/15 text-[#eee9de]/76 hover:border-white/35 hover:text-[#f3f0e5]"}`}
               >
                 {label}
@@ -163,7 +199,7 @@ export function MediaLibraryBrowser() {
             <button
               type="button"
               aria-pressed={favoritesOnly}
-              onClick={() => setFavoritesOnly((current) => !current)}
+              onClick={() => replaceLibraryState({ favoritesOnly: !favoritesOnly })}
               className={`min-h-11 border px-3 py-2 text-sm transition active:translate-y-px ${favoritesOnly ? "border-[#d6b45a]/70 bg-[#d6b45a]/10 text-[#f3d77d]" : "border-white/15 text-[#eee9de]/76 hover:border-white/35 hover:text-[#f3f0e5]"}`}
             >
               收藏 / Favorites
@@ -180,7 +216,7 @@ export function MediaLibraryBrowser() {
             <select
               id="library-sort"
               value={sort}
-              onChange={(event) => setSort(event.target.value as NonNullable<ArchiveFilter["sort"]>)}
+              onChange={(event) => replaceLibraryState({ sort: event.target.value as NonNullable<ArchiveFilter["sort"]> })}
               className="min-h-11 w-full border border-white/20 bg-[#0c0f0c] px-3 text-sm text-[#f3f0e5] sm:w-auto"
             >
               <option value="latest">最新 / Latest</option>
@@ -191,7 +227,7 @@ export function MediaLibraryBrowser() {
               <button
                 type="button"
                 aria-pressed={view === "grid"}
-                onClick={() => setView("grid")}
+                onClick={() => replaceLibraryState({ view: "grid" })}
                 className={`min-h-11 px-3 text-sm transition active:translate-y-px ${view === "grid" ? "bg-[#d6b45a]/15 text-[#f3d77d]" : "text-[#eee9de]/72 hover:text-[#f3f0e5]"}`}
               >
                 网格 Grid
@@ -199,7 +235,7 @@ export function MediaLibraryBrowser() {
               <button
                 type="button"
                 aria-pressed={view === "list"}
-                onClick={() => setView("list")}
+                onClick={() => replaceLibraryState({ view: "list" })}
                 className={`min-h-11 border-l border-white/20 px-3 text-sm transition active:translate-y-px ${view === "list" ? "bg-[#d6b45a]/15 text-[#f3d77d]" : "text-[#eee9de]/72 hover:text-[#f3f0e5]"}`}
               >
                 列表 List
@@ -221,7 +257,7 @@ export function MediaLibraryBrowser() {
             {results.map((item) => (
               <Link
                 key={item.slug}
-                href={`/media/${item.slug}`}
+                href={getMediaDetailHref(item.slug, libraryState)}
                 className={view === "grid" ? "group relative min-h-[260px] overflow-hidden rounded-xl border border-white/15 bg-black transition hover:-translate-y-1 hover:border-[#d6b45a]/70 active:translate-y-px" : "group grid overflow-hidden rounded-xl border border-white/15 bg-black transition hover:border-[#d6b45a]/70 active:translate-y-px sm:grid-cols-[220px_1fr]"}
               >
                 <div className={view === "grid" ? "absolute inset-0" : "relative aspect-[4/3] sm:aspect-auto"}>
@@ -272,7 +308,7 @@ export function MediaLibraryBrowser() {
           <button
             type="button"
             aria-pressed={category === ""}
-            onClick={() => setCategory("")}
+            onClick={() => replaceLibraryState({ category: "" })}
             className={`flex min-h-11 w-full items-center justify-between border-b border-white/10 px-2 py-3 text-left text-sm transition active:translate-y-px ${category === "" ? "text-[#d6b45a]" : "text-[#eee9de]/72 hover:text-[#f3f0e5]"}`}
           >
             <span className="min-w-0 flex-1">全部影像 / All media</span>
@@ -283,7 +319,7 @@ export function MediaLibraryBrowser() {
               key={item.value}
               type="button"
               aria-pressed={category === item.value}
-              onClick={() => setCategory(item.value)}
+              onClick={() => replaceLibraryState({ category: item.value })}
               className={`flex min-h-11 w-full items-center justify-between gap-3 border-b border-white/10 px-2 py-3 text-left text-sm transition active:translate-y-px ${category === item.value ? "text-[#d6b45a]" : "text-[#eee9de]/72 hover:text-[#f3f0e5]"}`}
             >
               <span className="min-w-0 flex-1">{item.labelZh} <span className="text-xs text-current/70">/ {item.labelEn}</span></span>
