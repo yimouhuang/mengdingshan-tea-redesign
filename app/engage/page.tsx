@@ -6,8 +6,8 @@ import { resolveMediaUrl } from "@/lib/media-url"
 
 const archiveInvitationSlugs = [
   "mengding-mountain-gateway",
-  "way-up-the-mountain",
-  "tea-garden-overlook"
+  "forest-stone-steps",
+  "ancient-tea-tree-of-mengding"
 ]
 
 export default function EngagePage() {

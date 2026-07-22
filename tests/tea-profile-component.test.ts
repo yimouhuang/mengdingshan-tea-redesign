@@ -75,8 +75,8 @@ test("tea profile maps every state to the approved archive-led tea prototype", (
 
   assert.match(source, /className="result-top/)
   assert.match(source, /className="tea-result/)
-  assert.match(source, /src=\{resolveMediaUrl\("\/media\/photos\/tea-garden-overlook\.jpg"\)\}/)
-  assert.match(source, /generic archive image used as cultural context only/i)
+  assert.match(source, /src=\{resolveMediaUrl\("\/media\/photos\/tea-garden-in-mist\.jpg"\)\}/)
+  assert.match(source, /alt="Tea Garden in Mist, an archive photograph used as cultural context only\."/)
   assert.match(source, /PRIMARY/)
   assert.match(source, /result\.primary\.nameZh/)
   assert.match(source, /aria-labelledby="tea-profile-primary-nameplate"/)
@@ -86,7 +86,7 @@ test("tea profile maps every state to the approved archive-led tea prototype", (
   assert.match(source, /aria-labelledby="tea-profile-alternate-nameplate"/)
   assert.match(source, /Source record/)
   assert.match(source, /Related media/)
-  assert.match(source, /href="\/media\/tea-garden-overlook"/)
+  assert.match(source, /href="\/media\/tea-garden-in-mist-photo"/)
   assert.ok(resultTop >= 0 && resultActions > resultTop, "expected result actions after the primary and alternate identity")
   assert.ok(detailGrid > resultActions, "expected detailed source records after result actions")
 })
@@ -110,7 +110,7 @@ test("tea profile keeps the prototype media hierarchy inside its responsive stat
   assert.match(startGrid, /a-moment-at-the-tea-table\.jpg/)
   assert.match(startGrid, /Begin 7 prompts/)
   assert.match(startGrid, /className="start-aside/)
-  assert.match(primaryPanel, /tea-garden-overlook\.jpg/)
+  assert.match(primaryPanel, /tea-garden-in-mist\.jpg/)
   assert.match(primaryPanel, /<h3 id="tea-profile-primary-nameplate"/)
   assert.match(alternatePanel, /<h3 id="tea-profile-alternate-nameplate"/)
 

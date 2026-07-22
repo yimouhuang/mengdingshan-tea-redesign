@@ -1,5 +1,5 @@
 import assert from "node:assert/strict"
-import { existsSync, readFileSync } from "node:fs"
+import { existsSync, readFileSync, readdirSync } from "node:fs"
 import { dirname, resolve } from "node:path"
 import test from "node:test"
 import { fileURLToPath } from "node:url"
@@ -48,7 +48,7 @@ test("tea quiz only uses the three verified visual-observation records", async (
 
   assert.deepEqual(
     observationQuestions.map((question) => question.mediaSlug).sort(),
-    ["picking-new-tea-shoots", "sorting-fresh-leaves", "tea-ancestor-relief"]
+    ["new-tea-shoots", "sorting-fresh-leaves", "tea-ancestor-relief"]
   )
   assert.ok(observationQuestions.every((question) => question.source.type === "archive"))
   assert.ok(
@@ -57,6 +57,68 @@ test("tea quiz only uses the three verified visual-observation records", async (
     )
   )
   assert.ok(observationQuestions.every((question) => !("url" in question.source)))
+})
+
+test("new tea shoots observation stays bounded to the refreshed archive record", async () => {
+  const { teaQuizQuestions } = await import("../lib/tea-quiz")
+  const question = teaQuizQuestions.find((candidate) => candidate.id === "observe-new-tea-shoots")
+
+  assert.ok(question)
+  assert.equal(question.promptZh, "只根据已核验影像条目《茶芽初展》，画面主要呈现的是？")
+  assert.equal(
+    question.promptEn,
+    "Based only on the verified archive item 'New Tea Shoots,' what does the image primarily show?"
+  )
+  assert.deepEqual(question.options, [
+    { zh: "初展的茶芽", en: "Newly unfurled tea shoots" },
+    { zh: "工作台上的鲜叶", en: "Fresh leaves on a worktable" },
+    { zh: "石壁上的浮雕", en: "A relief on a stone wall" },
+    { zh: "林间的石阶", en: "Stone steps in the forest" }
+  ])
+  assert.equal(question.correctIndex, 0)
+  assert.equal(
+    question.explanationZh,
+    "该题只读取档案条目的标题和说明：画面呈现的是初展的茶芽，不对地点或年代作推断。"
+  )
+  assert.equal(
+    question.explanationEn,
+    "This answer uses only the item's title and description: the image shows newly unfurled tea shoots and makes no claim about place or date."
+  )
+  assert.deepEqual(question.source, {
+    type: "archive",
+    mediaSlug: "new-tea-shoots",
+    titleZh: "茶芽初展",
+    titleEn: "New Tea Shoots"
+  })
+  assert.equal(question.mediaSlug, "new-tea-shoots")
+})
+
+test("production TypeScript contains no exact retired media slug literals", () => {
+  const productionDirectories = ["app", "components", "lib"]
+  const retiredSlugs = [
+    "way-up-the-mountain",
+    "a-retreat-for-wellbeing",
+    "picking-new-tea-shoots",
+    "fresh-leaves-in-hand",
+    "tea-garden-overlook"
+  ]
+  const sourceFiles = productionDirectories.flatMap((directory) =>
+    readdirSync(resolve(projectRoot, directory), { recursive: true, withFileTypes: true })
+      .filter((entry) => entry.isFile() && /\.[cm]?[jt]sx?$/.test(entry.name))
+      .map((entry) => resolve(entry.parentPath, entry.name))
+  )
+
+  for (const filePath of sourceFiles) {
+    const source = readFileSync(filePath, "utf8")
+
+    for (const slug of retiredSlugs) {
+      assert.doesNotMatch(
+        source,
+        new RegExp(`["']${slug}["']`),
+        `found retired media slug ${slug} in ${filePath}`
+      )
+    }
+  }
 })
 
 test("tea quiz question types require four readonly options and a valid answer index", () => {

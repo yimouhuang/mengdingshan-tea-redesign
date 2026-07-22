@@ -18,12 +18,13 @@ test("guide prototype is a poster-only, six-stop archive route", () => {
     "tea-summit-landmark",
     "tea-garden-in-mist",
     "ancient-tea-tree-of-mengding",
-    "picking-new-tea-shoots",
+    "new-tea-shoots",
     "tea-ancestor-relief"
   ]
 
   assert.match(source, /getMediaItem/)
   requiredSlugs.forEach((slug) => assert.match(source, new RegExp(slug)))
+  assert.doesNotMatch(source, /"picking-new-tea-shoots"/)
   assert.match(source, /Static guide concept/)
   assert.match(source, /Route node/)
   assert.match(source, /Follow the route/)

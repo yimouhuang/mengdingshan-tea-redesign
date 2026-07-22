@@ -114,11 +114,13 @@ test("engage implements the prototype archive row with three caption-only real r
 
   for (const slug of [
     "mengding-mountain-gateway",
-    "way-up-the-mountain",
-    "tea-garden-overlook"
+    "forest-stone-steps",
+    "ancient-tea-tree-of-mengding"
   ]) {
     assert.match(source, new RegExp(`"${slug}"`), `expected the real ${slug} archive source`)
   }
+
+  assert.doesNotMatch(source, /"(?:way-up-the-mountain|tea-garden-overlook)"/)
 
   assert.match(source, /\u4ece\u5f71\u50cf\u5f00\u59cb\uff0c\u4e0d\u6b62\u505c\u5728\u7ed3\u679c/)
   assert.match(source, /\u627e\u8336\u7ed3\u679c\u4e0e\u95ee\u7b54\u4f9d\u636e\u90fd\u53ef\u4ee5\u56de\u5230\u672c\u9986\u7684\u771f\u5b9e\u5f71\u50cf\u6761\u76ee\u7ee7\u7eed\u6d4f\u89c8\u3002/)

@@ -8,7 +8,7 @@ const guideStopSlugs = [
   "tea-summit-landmark",
   "tea-garden-in-mist",
   "ancient-tea-tree-of-mengding",
-  "picking-new-tea-shoots",
+  "new-tea-shoots",
   "tea-ancestor-relief"
 ] as const
 

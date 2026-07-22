@@ -91,11 +91,11 @@ export const teaQuizSources = [
   yaanUnescoInscriptionSource
 ] as const satisfies readonly TeaQuizExternalSource[]
 
-const archivePickingNewTeaShootsSource: TeaQuizArchiveSource = {
+const archiveNewTeaShootsSource: TeaQuizArchiveSource = {
   type: "archive",
-  mediaSlug: "picking-new-tea-shoots",
-  titleZh: "采一芽",
-  titleEn: "Picking New Tea Shoots"
+  mediaSlug: "new-tea-shoots",
+  titleZh: "茶芽初展",
+  titleEn: "New Tea Shoots"
 }
 
 const archiveSortingFreshLeavesSource: TeaQuizArchiveSource = {
@@ -127,7 +127,7 @@ export const teaQuizQuestions: readonly TeaQuizQuestion[] = [
     explanationZh: "中国非物质文化遗产网将该项目列为第五批国家级非遗代表性项目，公布于 2021 年。",
     explanationEn: "The China ICH record identifies it as a fifth-batch national representative project announced in 2021.",
     source: mengdingCraftSource,
-    mediaSlug: "picking-new-tea-shoots"
+    mediaSlug: "new-tea-shoots"
   },
   {
     id: "declaration-region",
@@ -175,7 +175,7 @@ export const teaQuizQuestions: readonly TeaQuizQuestion[] = [
     explanationZh: "资料将“看茶制茶”列为蒙山茶传统制作技艺的重要特点，指向对茶叶状态的判断与应对。",
     explanationEn: "The record names this as a key feature of the craft: judging the tea and responding to its condition.",
     source: mengdingCraftSource,
-    mediaSlug: "picking-new-tea-shoots"
+    mediaSlug: "new-tea-shoots"
   },
   {
     id: "fire-master",
@@ -239,7 +239,7 @@ export const teaQuizQuestions: readonly TeaQuizQuestion[] = [
     explanationZh: "雅安市政府资料称，该系统于 2017 年入选第四批中国重要农业文化遗产。",
     explanationEn: "Ya'an government material states that the system entered the fourth batch of China Important Agricultural Heritage in 2017.",
     source: yaanGovernmentSource,
-    mediaSlug: "picking-new-tea-shoots"
+    mediaSlug: "new-tea-shoots"
   },
   {
     id: "agricultural-heritage-category",
@@ -287,7 +287,7 @@ export const teaQuizQuestions: readonly TeaQuizQuestion[] = [
     explanationZh: "UNESCO 将茶园管理、采摘、手工加工，以及饮用和分享等环节纳入相关实践。",
     explanationEn: "UNESCO includes tea-garden management, picking, manual processing, and the practices of drinking and sharing tea.",
     source: unescoSource,
-    mediaSlug: "picking-new-tea-shoots"
+    mediaSlug: "new-tea-shoots"
   },
   {
     id: "unesco-six-tea-types",
@@ -306,20 +306,20 @@ export const teaQuizQuestions: readonly TeaQuizQuestion[] = [
     mediaSlug: "sorting-fresh-leaves"
   },
   {
-    id: "observe-picking-new-tea-shoots",
-    promptZh: "只根据已核验影像条目《采摘新茶芽》，画面记录的手部动作是？",
-    promptEn: "Based only on the verified archive item 'Picking New Tea Shoots,' what hand action is recorded?",
+    id: "observe-new-tea-shoots",
+    promptZh: "只根据已核验影像条目《茶芽初展》，画面主要呈现的是？",
+    promptEn: "Based only on the verified archive item 'New Tea Shoots,' what does the image primarily show?",
     options: [
-      { zh: "采摘新茶芽", en: "Picking new tea shoots" },
-      { zh: "鲜叶分拣", en: "Sorting fresh leaves" },
-      { zh: "观察成茶外形", en: "Examining finished tea" },
-      { zh: "雕刻石碑", en: "Carving a stone stele" }
+      { zh: "初展的茶芽", en: "Newly unfurled tea shoots" },
+      { zh: "工作台上的鲜叶", en: "Fresh leaves on a worktable" },
+      { zh: "石壁上的浮雕", en: "A relief on a stone wall" },
+      { zh: "林间的石阶", en: "Stone steps in the forest" }
     ],
     correctIndex: 0,
-    explanationZh: "该题只读取档案条目的标题和说明：它记录的是采摘一芽茶叶的手部动作，不对地点或年代作推断。",
-    explanationEn: "This answer uses only the item's title and description: it records hands picking a tea shoot and makes no claim about place or date.",
-    source: archivePickingNewTeaShootsSource,
-    mediaSlug: "picking-new-tea-shoots"
+    explanationZh: "该题只读取档案条目的标题和说明：画面呈现的是初展的茶芽，不对地点或年代作推断。",
+    explanationEn: "This answer uses only the item's title and description: the image shows newly unfurled tea shoots and makes no claim about place or date.",
+    source: archiveNewTeaShootsSource,
+    mediaSlug: "new-tea-shoots"
   },
   {
     id: "observe-sorting-fresh-leaves",

@@ -403,8 +403,8 @@ export function TeaProfile() {
       <div className="result-top mt-7 grid gap-6 min-[901px]:grid-cols-[minmax(0,1.22fr)_minmax(280px,0.78fr)]">
         <section className="tea-result relative isolate min-h-[420px] overflow-hidden rounded-[14px] border border-[#d6b45a]/55" aria-labelledby="tea-profile-primary-nameplate">
           <Image
-            src={resolveMediaUrl("/media/photos/tea-garden-overlook.jpg")}
-            alt="Tea Garden Overlook, a generic archive image used as cultural context only."
+            src={resolveMediaUrl("/media/photos/tea-garden-in-mist.jpg")}
+            alt="Tea Garden in Mist, an archive photograph used as cultural context only."
             fill
             sizes="(max-width: 900px) calc(100vw - 40px), 62vw"
             className="z-[-2] object-cover saturate-[.66] brightness-[.68]"
@@ -455,7 +455,7 @@ export function TeaProfile() {
         <button type="button" onClick={restartProfile} className={actionClassName}>
           再找一次 / <span lang="en">Try again</span>
         </button>
-        <Link href="/media/tea-garden-overlook" className={subtleActionClassName}>
+        <Link href="/media/tea-garden-in-mist-photo" className={subtleActionClassName}>
           查看关联影像 / <span lang="en">Related media</span>
         </Link>
       </div>

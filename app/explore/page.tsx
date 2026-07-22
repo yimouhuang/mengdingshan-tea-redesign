@@ -6,7 +6,7 @@ import { getMediaItem, getMediaKindLabel } from "@/lib/media"
 
 const exploreMediaSlugs = [
   "tea-garden-in-mist",
-  "picking-new-tea-shoots",
+  "new-tea-shoots",
   "tea-ancestor-relief"
 ] as const
 
