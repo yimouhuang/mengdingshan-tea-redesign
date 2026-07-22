@@ -61,7 +61,6 @@ const expectedPhotoAssets = [
 ] as const
 
 const expectedPosterPages = {
-  "origin-of-tea": ["/media/posters/origin-of-tea.png"],
   "tea-and-nature-in-harmony": [
     "/media/posters/tea-and-nature-01.png",
     "/media/posters/tea-and-nature-02.png"
@@ -77,7 +76,6 @@ const expectedPosterPages = {
 } as const
 
 const expectedPosterThumbnails = {
-  "origin-of-tea": "/media/posters/origin-of-tea-thumb.webp",
   "tea-and-nature-in-harmony": "/media/posters/tea-and-nature-thumb.webp",
   "tea-picking-through-the-solar-terms": "/media/posters/solar-terms-picking-thumb.webp",
   "chinese-tea-hospitality": "/media/posters/tea-hospitality-thumb.webp"
@@ -109,7 +107,6 @@ const expectedSlugs = [
   "a-moment-at-the-tea-table",
   "tea-garden-in-mist-photo",
   "a-retreat-for-wellbeing-photo",
-  "origin-of-tea",
   "tea-and-nature-in-harmony",
   "tea-picking-through-the-solar-terms",
   "chinese-tea-hospitality"
@@ -186,21 +183,22 @@ function getMp4DurationInSeconds(filePath: string): number {
   }
 }
 
-test("media index contains the exact refreshed 29-record archive", () => {
+test("media index contains the exact refreshed 28-record public archive", () => {
   const slugs = mediaItems.map((item) => item.slug)
   const homeOrders = mediaItems.map((item) => item.homeOrder)
 
-  assert.equal(mediaItems.length, 29)
+  assert.equal(mediaItems.length, 28)
   assert.deepEqual(slugs, expectedSlugs)
-  assert.equal(new Set(homeOrders).size, 29)
+  assert.equal(new Set(homeOrders).size, 28)
+  assert.ok(!slugs.includes("origin-of-tea"))
   assert.ok(mediaItems.every((item) => item.titleZh.trim().length > 0))
   assert.ok(mediaItems.every((item) => item.titleEn.trim().length > 0))
 })
 
-test("media index has 20 video, 5 photo, and 4 poster records", () => {
+test("media index has 20 video, 5 photo, and 3 poster records", () => {
   assert.equal(mediaItems.filter((item) => item.kind === "video").length, 20)
   assert.equal(mediaItems.filter((item) => item.kind === "photo").length, 5)
-  assert.equal(mediaItems.filter((item) => item.kind === "poster").length, 4)
+  assert.equal(mediaItems.filter((item) => item.kind === "poster").length, 3)
 })
 
 test("one leaf two millennia has the approved bilingual Vlog metadata", () => {
@@ -225,14 +223,20 @@ test("one leaf two millennia has the approved bilingual Vlog metadata", () => {
   assert.equal(getLocalMediaPath(vlog.poster), "/media/posters/one-leaf-two-millennia.jpg")
 })
 
-test("featured home media is the approved five-part heritage story", () => {
+test("home feature data composes the approved four-item sequence", () => {
+  const linkedArchiveSlugs = getFeaturedMedia().map((item) => item.slug)
+
+  assert.deepEqual(linkedArchiveSlugs, [
+    "one-leaf-two-millennia",
+    "red-gate-of-mengding",
+    "tea-ancestor-relief"
+  ])
   assert.deepEqual(
-    getFeaturedMedia().map((item) => item.slug),
+    [linkedArchiveSlugs[0], "origin-of-tea-home", ...linkedArchiveSlugs.slice(1)],
     [
       "one-leaf-two-millennia",
-      "ancient-tea-tree-of-mengding",
+      "origin-of-tea-home",
       "red-gate-of-mengding",
-      "sorting-fresh-leaves",
       "tea-ancestor-relief"
     ]
   )
@@ -374,6 +378,7 @@ test("public media contains exactly the approved refreshed assets", () => {
 
   const expectedPosters = [
     ...expectedVideoAssets.map((asset) => `${asset}.jpg`),
+    "origin-of-tea.png",
     ...Object.values(expectedPosterThumbnails).map((path) => path.split("/").at(-1)!),
     ...Object.values(expectedPosterPages).flat().map((path) => path.split("/").at(-1)!)
   ].sort()

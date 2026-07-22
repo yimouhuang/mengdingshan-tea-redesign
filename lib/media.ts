@@ -81,9 +81,7 @@ const categories = {
 
 const featuredHomeSlugs = [
   "one-leaf-two-millennia",
-  "ancient-tea-tree-of-mengding",
   "red-gate-of-mengding",
-  "sorting-fresh-leaves",
   "tea-ancestor-relief"
 ] as const
 
@@ -533,20 +531,6 @@ const seededMediaItems: TeaMedia[] = [
     descriptionEn: "A still image of the setting around the “A Retreat for Wellbeing” landscape text.",
     tags: ["养生", "Landscape text", "Photo"],
     homeOrder: 29,
-    aspect: "3:4"
-  }),
-  createPoster({
-    assetId: "origin-of-tea",
-    pages: ["origin-of-tea.png"],
-    slug: "origin-of-tea",
-    titleZh: "蒙顶山茶",
-    titleEn: "The Origin of Tea",
-    categoryZh: categories.heritage.zh,
-    categoryEn: categories.heritage.en,
-    descriptionZh: "以海报讲述蒙顶山茶的起源与传承。",
-    descriptionEn: "A poster introducing the origin and legacy of Mengding tea.",
-    tags: ["蒙顶山茶", "Origin of tea", "Poster"],
-    homeOrder: 30,
     aspect: "3:4"
   }),
   createPoster({

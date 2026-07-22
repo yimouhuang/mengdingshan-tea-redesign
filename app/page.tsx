@@ -4,12 +4,15 @@ import { ArchiveNav } from "@/components/archive-nav"
 import {
   getFeaturedMedia,
   getMediaItem,
-  getMediaKindLabel
+  getMediaKindLabel,
+  resolveMediaUrl
 } from "@/lib/media"
 
 export default function Home() {
   const featured = getFeaturedMedia()
+  const [leadFeature, ...supportingFeatures] = featured
   const hero = getMediaItem("tea-garden-in-mist")
+  const homePosterUrl = resolveMediaUrl("/media/posters/origin-of-tea.png")
 
   if (!hero) {
     throw new Error("Home hero media record is missing")
@@ -76,11 +79,43 @@ export default function Home() {
           </div>
         </div>
         <div className="grid auto-rows-[150px] grid-cols-2 gap-3 md:auto-rows-[170px]">
-          {featured.map((item, index) => (
+          {leadFeature ? (
+            <Link
+              href={`/media/${leadFeature.slug}`}
+              className="group relative col-span-2 row-span-2 overflow-hidden rounded-xl border border-white/18 bg-black"
+            >
+              <Image
+                src={leadFeature.poster}
+                alt={`${leadFeature.titleZh} / ${leadFeature.titleEn}`}
+                fill
+                sizes="(min-width: 1024px) 25vw, 50vw"
+                className="object-cover transition duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+              <span className="absolute right-3 top-3 rounded bg-black/60 px-2 py-1 text-xs">
+                {getMediaKindLabel(leadFeature.kind)}
+              </span>
+              <div className="absolute bottom-0 p-4">
+                <h2 className="font-display text-xl">{leadFeature.titleZh}</h2>
+                <p className="mt-1 text-sm text-[#f3f0e5]/78">{leadFeature.titleEn}</p>
+                <p className="mt-2 text-xs text-[#b6dc9e]">{leadFeature.categoryEn}</p>
+              </div>
+            </Link>
+          ) : null}
+          <article className="relative col-span-2 row-span-2 overflow-hidden rounded-xl border border-white/18 bg-black sm:col-span-1">
+            <Image
+              src={homePosterUrl}
+              alt="蒙顶山茶 / The Origin of Tea"
+              fill
+              sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+              className="object-contain"
+            />
+          </article>
+          {supportingFeatures.map((item) => (
             <Link
               key={item.slug}
               href={`/media/${item.slug}`}
-              className={`group relative overflow-hidden rounded-xl border border-white/18 bg-black ${index === 0 ? "col-span-2 row-span-2" : ""}`}
+              className="group relative overflow-hidden rounded-xl border border-white/18 bg-black"
             >
               <Image
                 src={item.poster}

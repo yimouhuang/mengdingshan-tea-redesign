@@ -33,11 +33,24 @@ function cardTypeOverlay(source: string, cardMapStart: string): string {
   return source.slice(overlayStart, overlayEnd + "</span>".length)
 }
 
-function assertKindOnlyOverlay(overlay: string): void {
-  assert.match(overlay, /\{getMediaKindLabel\(item\.kind\)\}/)
-  assert.doesNotMatch(overlay, /item\.duration/)
-  assert.doesNotMatch(overlay, /item\.assetCount/)
+function assertKindOnlyOverlay(overlay: string, itemName = "item"): void {
+  assert.match(overlay, new RegExp(`\\{getMediaKindLabel\\(${itemName}\\.kind\\)\\}`))
+  assert.doesNotMatch(overlay, new RegExp(`${itemName}\\.duration`))
+  assert.doesNotMatch(overlay, new RegExp(`${itemName}\\.assetCount`))
   assert.doesNotMatch(overlay, /00:00/)
+}
+
+function originPosterCard(source: string): string {
+  const posterStart = source.indexOf("src={homePosterUrl}")
+  assert.notEqual(posterStart, -1, "Missing the home-only origin poster image")
+
+  const cardStart = source.lastIndexOf("<article", posterStart)
+  const cardEnd = source.indexOf("</article>", posterStart)
+
+  assert.notEqual(cardStart, -1, "The home-only origin poster must use an article card")
+  assert.notEqual(cardEnd, -1, "The home-only origin poster article must be closed")
+
+  return source.slice(cardStart, cardEnd + "</article>".length)
 }
 
 test("home surface binds the mist garden record poster as its only priority image", () => {
@@ -67,8 +80,47 @@ test("home hero keeps its copy above metadata in one normal-flow foreground laye
   assert.doesNotMatch(metadataTag, /\babsolute\b|bottom-/)
 })
 
-test("home featured-card type overlay contains only the media kind label", () => {
-  assertKindOnlyOverlay(cardTypeOverlay(homeSource, "{featured.map((item, index) => ("))
+test("home linked feature cards keep kind-only overlays", () => {
+  assertKindOnlyOverlay(
+    cardTypeOverlay(homeSource, 'href={`/media/${leadFeature.slug}`}'),
+    "leadFeature"
+  )
+  assertKindOnlyOverlay(
+    cardTypeOverlay(homeSource, "{supportingFeatures.map((item) => (")
+  )
+})
+
+test("home places its origin poster between the lead Vlog and supporting archive cards", () => {
+  const leadStart = homeSource.indexOf('href={`/media/${leadFeature.slug}`}')
+  const posterStart = homeSource.indexOf("src={homePosterUrl}")
+  const supportStart = homeSource.indexOf("supportingFeatures.map")
+
+  assert.match(homeSource, /const \[leadFeature, \.\.\.supportingFeatures\] = featured/)
+  assert.notEqual(leadStart, -1, "Missing the lead Vlog card")
+  assert.notEqual(posterStart, -1, "Missing the home-only origin poster")
+  assert.notEqual(supportStart, -1, "Missing the supporting archive cards")
+  assert.ok(leadStart < posterStart, "The lead Vlog must precede the origin poster")
+  assert.ok(posterStart < supportStart, "The origin poster must precede the supporting archive cards")
+})
+
+test("home renders the full-size origin poster as a contained two-row non-link article", () => {
+  const card = originPosterCard(homeSource)
+
+  assert.match(
+    homeSource,
+    /const homePosterUrl = resolveMediaUrl\("\/media\/posters\/origin-of-tea\.png"\)/
+  )
+  assert.match(card, /alt=".*The Origin of Tea"/)
+  assert.match(card, /col-span-2/)
+  assert.match(card, /sm:col-span-1/)
+  assert.match(card, /row-span-2/)
+  assert.match(
+    card,
+    /sizes="\(min-width: 1024px\) 25vw, \(min-width: 640px\) 50vw, 100vw"/
+  )
+  assert.match(card, /object-contain/)
+  assert.doesNotMatch(card, /<Link\b/)
+  assert.doesNotMatch(card, /href\s*=\s*(?:\{?['"`])?\/media\//)
 })
 
 test("library card type overlay contains only the media kind label", () => {
