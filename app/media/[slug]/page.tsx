@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArchiveNav } from "@/components/archive-nav"
+import { MediaActions } from "@/components/media-actions"
 import { getMediaItem, getMediaNeighbors, getRelatedMedia, mediaItems } from "@/lib/media"
 
 type Props = { params: Promise<{ slug: string }> }
@@ -107,10 +108,12 @@ export default async function MediaPage({ params }: Props) {
             <div className="mt-5 flex flex-wrap gap-2">
               {item.tags.map(tag => <span key={tag} className="rounded-full border border-white/15 px-3 py-1 text-xs">{tag}</span>)}
             </div>
-            <div className="mt-6 grid grid-cols-2 gap-3">
-              <button className="border border-white/25 py-3">☆ 加入收藏</button>
-              <button className="border border-white/25 py-3">↗ 分享 Share</button>
-            </div>
+            <MediaActions
+              slug={item.slug}
+              titleZh={item.titleZh}
+              titleEn={item.titleEn}
+              knownSlugs={mediaItems.map((record) => record.slug)}
+            />
           </aside>
         </div>
         <div className="mt-9">

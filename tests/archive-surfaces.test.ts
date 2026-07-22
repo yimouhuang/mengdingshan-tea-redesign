@@ -15,6 +15,10 @@ const mediaPageSource = readFileSync(
   resolve(projectRoot, "app/media/[slug]/page.tsx"),
   "utf8"
 )
+const mediaActionsSource = readFileSync(
+  resolve(projectRoot, "components/media-actions.tsx"),
+  "utf8"
+)
 
 function cardTypeOverlay(source: string, cardMapStart: string): string {
   const cardStart = source.indexOf(cardMapStart)
@@ -142,4 +146,35 @@ test("navigation menu button describes its expanded state", () => {
 test("archive navigation renders each configured item as a link", () => {
   assert.doesNotMatch(archiveNavSource, /item\.unavailable/)
   assert.doesNotMatch(archiveNavSource, /item\.availabilityLabel/)
+})
+
+test("archive surface delegates detail favorite and share actions to the client component", () => {
+  assert.match(mediaPageSource, /from ["']@\/components\/media-actions["']/)
+  assert.match(mediaPageSource, /<MediaActions[\s\S]*?slug=\{item\.slug\}[\s\S]*?titleZh=\{item\.titleZh\}[\s\S]*?titleEn=\{item\.titleEn\}[\s\S]*?knownSlugs=\{mediaItems\.map\(\(record\) => record\.slug\)\}/)
+  assert.doesNotMatch(mediaPageSource, /<button className="border border-white\/25 py-3">/)
+})
+
+test("favorite action is an accessible client control with same-tab feedback", () => {
+  assert.match(mediaActionsSource, /^"use client"/)
+  assert.match(mediaActionsSource, /readMediaFavorites\(window\.localStorage, knownSlugs\)/)
+  assert.match(mediaActionsSource, /toggleMediaFavorite\(\s*window\.localStorage,\s*slug,\s*knownSlugs\s*\)/)
+  assert.match(mediaActionsSource, /aria-pressed=\{isFavorite\}/)
+  assert.match(mediaActionsSource, /☆ 加入收藏/)
+  assert.match(mediaActionsSource, /★ 已收藏 \/ Saved/)
+  assert.match(mediaActionsSource, /aria-live="polite"/)
+  assert.match(mediaActionsSource, /已取消收藏 \/ Removed/)
+  assert.match(mediaActionsSource, /new CustomEvent\(MEDIA_FAVORITES_CHANGED_EVENT,[\s\S]*?detail: \{ favorites \}/)
+})
+
+test("share action prefers navigator share and falls back to the clipboard", () => {
+  assert.match(mediaActionsSource, /navigator\.share\(buildMediaShareData\(titleZh, titleEn, window\.location\.href\)\)/)
+  assert.match(mediaActionsSource, /已分享 \/ Shared/)
+  assert.match(mediaActionsSource, /navigator\.clipboard\.writeText\(window\.location\.href\)/)
+  assert.match(mediaActionsSource, /链接已复制 \/ Link copied/)
+  assert.match(mediaActionsSource, /error\.name === "AbortError"/)
+  assert.match(mediaActionsSource, /分享失败，请复制地址栏链接 \/ Unable to share\. Copy the address-bar link\./)
+
+  const shareIndex = mediaActionsSource.indexOf("navigator.share(")
+  const clipboardIndex = mediaActionsSource.indexOf("navigator.clipboard.writeText(")
+  assert.ok(shareIndex >= 0 && shareIndex < clipboardIndex, "Web Share must be preferred")
 })

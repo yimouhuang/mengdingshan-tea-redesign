@@ -2,7 +2,13 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import {
+  MEDIA_FAVORITES_CHANGED_EVENT,
+  MEDIA_FAVORITES_STORAGE_KEY,
+  parseMediaFavorites,
+  readMediaFavorites
+} from "@/lib/media-favorites"
 import {
   filterMedia,
   getMediaCategories,
@@ -28,19 +34,65 @@ export function MediaLibraryBrowser() {
   const [kind, setKind] = useState<LibraryKind>("all")
   const [sort, setSort] = useState<NonNullable<ArchiveFilter["sort"]>>("latest")
   const [view, setView] = useState<LibraryView>("grid")
+  const [favoritesOnly, setFavoritesOnly] = useState(false)
+  const [favoriteSlugs, setFavoriteSlugs] = useState<string[]>([])
 
   const categories = useMemo(() => getMediaCategories(mediaItems), [])
-  const results = useMemo(
-    () =>
-      filterMedia(mediaItems, {
+  const knownSlugs = useMemo(() => mediaItems.map((item) => item.slug), [])
+
+  useEffect(() => {
+    function syncFavorites() {
+      setFavoriteSlugs(readMediaFavorites(window.localStorage, knownSlugs))
+    }
+
+    function handleStorage(event: StorageEvent) {
+      if (event.key !== MEDIA_FAVORITES_STORAGE_KEY) {
+        return
+      }
+
+      setFavoriteSlugs(parseMediaFavorites(event.newValue, knownSlugs))
+    }
+
+    function handleFavoritesChanged(event: Event) {
+      const favorites = event instanceof CustomEvent ? event.detail?.favorites : undefined
+
+      if (Array.isArray(favorites)) {
+        setFavoriteSlugs(parseMediaFavorites(JSON.stringify(favorites), knownSlugs))
+        return
+      }
+
+      syncFavorites()
+    }
+
+    syncFavorites()
+    window.addEventListener("storage", handleStorage)
+    window.addEventListener(MEDIA_FAVORITES_CHANGED_EVENT, handleFavoritesChanged)
+
+    return () => {
+      window.removeEventListener("storage", handleStorage)
+      window.removeEventListener(MEDIA_FAVORITES_CHANGED_EVENT, handleFavoritesChanged)
+    }
+  }, [knownSlugs])
+
+  const results = useMemo(() => {
+    const filtered = filterMedia(mediaItems, {
         query,
         category: category || undefined,
         kind: kind === "all" ? undefined : kind,
         sort
-      }),
-    [category, kind, query, sort]
-  )
-  const isDefault = !query && !category && kind === "all" && sort === "latest" && view === "grid"
+      })
+
+    return favoritesOnly
+      ? filtered.filter((item) => favoriteSlugs.includes(item.slug))
+      : filtered
+  }, [category, favoriteSlugs, favoritesOnly, kind, query, sort])
+  const isDefault =
+    !query &&
+    !category &&
+    kind === "all" &&
+    sort === "latest" &&
+    view === "grid" &&
+    !favoritesOnly
 
   function resetFilters() {
     setQuery("")
@@ -48,6 +100,7 @@ export function MediaLibraryBrowser() {
     setKind("all")
     setSort("latest")
     setView("grid")
+    setFavoritesOnly(false)
   }
 
   return (
@@ -91,6 +144,14 @@ export function MediaLibraryBrowser() {
                 {label}
               </button>
             ))}
+            <button
+              type="button"
+              aria-pressed={favoritesOnly}
+              onClick={() => setFavoritesOnly((current) => !current)}
+              className={`min-h-11 border px-3 py-2 text-sm transition active:translate-y-px ${favoritesOnly ? "border-[#d6b45a]/70 bg-[#d6b45a]/10 text-[#f3d77d]" : "border-white/15 text-[#eee9de]/76 hover:border-white/35 hover:text-[#f3f0e5]"}`}
+            >
+              收藏 / Favorites
+            </button>
           </div>
         </div>
 
@@ -171,8 +232,12 @@ export function MediaLibraryBrowser() {
           </div>
         ) : (
           <div className="mt-4 border border-dashed border-white/20 px-6 py-14 text-center">
-            <p className="font-display text-2xl text-[#f3f0e5]">未找到匹配档案 / No matching records</p>
-            <p className="mt-2 text-sm text-[#eee9de]/62">尝试其他关键词或重置筛选条件。</p>
+            <p className="font-display text-2xl text-[#f3f0e5]">
+              {favoritesOnly ? "尚未收藏影像 / No saved records" : "未找到匹配档案 / No matching records"}
+            </p>
+            <p className="mt-2 text-sm text-[#eee9de]/62">
+              {favoritesOnly ? "收藏仅保存在当前浏览器 / Favorites stay in this browser." : "尝试其他关键词或重置筛选条件。"}
+            </p>
             <button
               type="button"
               onClick={resetFilters}

@@ -42,10 +42,11 @@ test("initial media library render contains every card with poster-only kind lab
     "全部 / All",
     getMediaKindLabel("photo"),
     getMediaKindLabel("video"),
-    getMediaKindLabel("poster")
+    getMediaKindLabel("poster"),
+    "收藏 / Favorites"
   ]
 
-  assert.equal((filterMarkup.match(/<button/g) ?? []).length, 4)
+  assert.equal((filterMarkup.match(/<button/g) ?? []).length, 5)
   let previousLabelIndex = -1
   for (const label of filterLabels) {
     const labelIndex = filterMarkup.indexOf(label)
@@ -88,4 +89,45 @@ test("library introduction includes photo, video, and poster records", () => {
     librarySource,
     /浏览蒙顶山茶的图片、视频与海报档案 \/ Browse the photo, video, and poster archive\./
   )
+})
+
+test("favorite library filter intersects the existing archive filters without changing kind", () => {
+  assert.match(librarySource, /const \[favoritesOnly, setFavoritesOnly\] = useState\(false\)/)
+  assert.match(librarySource, /filterMedia\(mediaItems,[\s\S]*?favoritesOnly[\s\S]*?filtered\.filter\([\s\S]*?favoriteSlugs\.includes\(item\.slug\)/)
+
+  const favoritePressed = librarySource.indexOf("aria-pressed={favoritesOnly}")
+  const favoriteButtonStart = librarySource.lastIndexOf("<button", favoritePressed)
+  const favoriteButtonEnd = librarySource.indexOf("</button>", favoritePressed)
+
+  assert.notEqual(favoritePressed, -1, "Missing favorites filter button")
+  assert.notEqual(favoriteButtonStart, -1, "Missing favorites filter button start")
+  assert.notEqual(favoriteButtonEnd, -1, "Missing favorites filter button end")
+
+  const favoriteButton = librarySource.slice(
+    favoriteButtonStart,
+    favoriteButtonEnd + "</button>".length
+  )
+
+  assert.match(favoriteButton, /收藏 \/ Favorites/)
+  assert.match(favoriteButton, /setFavoritesOnly/)
+  assert.doesNotMatch(favoriteButton, /setKind/)
+})
+
+test("favorite library state synchronizes from storage and same-tab changes with cleanup", () => {
+  assert.ok(librarySource.includes("MEDIA_FAVORITES_STORAGE_KEY"))
+  assert.ok(librarySource.includes("MEDIA_FAVORITES_CHANGED_EVENT"))
+  assert.match(librarySource, /readMediaFavorites\(window\.localStorage, knownSlugs\)/)
+  assert.match(librarySource, /addEventListener\("storage", handleStorage\)/)
+  assert.match(librarySource, /event\.key !== MEDIA_FAVORITES_STORAGE_KEY/)
+  assert.match(librarySource, /addEventListener\(MEDIA_FAVORITES_CHANGED_EVENT, handleFavoritesChanged\)/)
+  assert.match(librarySource, /removeEventListener\("storage", handleStorage\)/)
+  assert.match(librarySource, /removeEventListener\(MEDIA_FAVORITES_CHANGED_EVENT, handleFavoritesChanged\)/)
+})
+
+test("favorite library filter participates in default state, reset, and empty copy", () => {
+  assert.match(librarySource, /const isDefault =[\s\S]*?!favoritesOnly/)
+  assert.match(librarySource, /function resetFilters\(\)[\s\S]*?setFavoritesOnly\(false\)/)
+  assert.match(librarySource, /尚未收藏影像 \/ No saved records/)
+  assert.match(librarySource, /收藏仅保存在当前浏览器 \/ Favorites stay in this browser\./)
+  assert.match(librarySource, /No matching records/)
 })
