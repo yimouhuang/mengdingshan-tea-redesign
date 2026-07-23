@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url"
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..")
 const engagePagePath = resolve(projectRoot, "app/engage/page.tsx")
+const feedbackPagePath = resolve(projectRoot, "app/engage/feedback/page.tsx")
 const quizPagePath = resolve(projectRoot, "app/engage/quiz/page.tsx")
 const teaProfilePagePath = resolve(projectRoot, "app/engage/tea-profile/page.tsx")
 
@@ -56,6 +57,28 @@ test("engage implements the prototype 1.8/.78 media feature and vertically balan
   assert.match(quizPath[0], /Traceable sources/)
   assert.match(quizPath[0], /\u5f00\u59cb\u95ee\u7b54/)
   assert.match(quizPath[0], /Start quiz/)
+})
+
+test("engage exposes a static archive-contribution route without submission behavior", () => {
+  const source = readFileSync(engagePagePath, "utf8")
+  const quizIndex = source.indexOf('href="/engage/quiz"')
+  const feedbackIndex = source.indexOf('href="/engage/feedback"')
+
+  assert.equal(existsSync(feedbackPagePath), true, "expected app/engage/feedback/page.tsx to exist")
+  assert.ok(quizIndex >= 0, "expected the established quiz entry")
+  assert.ok(feedbackIndex > quizIndex, "expected the archive-contribution entry below the quiz entry")
+  assert.match(source, /\u5171\u5efa\u6863\u6848/)
+  assert.match(source, /\u63d0\u4ea4\u53cd\u9988/)
+  assert.match(source, /href="\/engage\/feedback"/)
+  assert.match(source, /border-\[#d6b45a\]\/55/)
+  assert.doesNotMatch(source, /(?:fetch\s*\(|axios\.|XMLHttpRequest|\/api\/|beforeunload|pagehide|visibilitychange|mouseleave|mouseout|exit[-\s]?intent)/i)
+
+  const feedbackSource = readFileSync(feedbackPagePath, "utf8")
+  assert.match(feedbackSource, /ArchiveNav/)
+  assert.match(feedbackSource, /\u5171\u5efa\u6863\u6848/)
+  assert.match(feedbackSource, /\u53d1\u73b0\u8d44\u6599\u9519\u8bef\u3001\u62e5\u6709\u76f8\u5173\u7ebf\u7d22\uff0c\u6216\u5e0c\u671b\u5e2e\u52a9\u5b8c\u5584\u672c\u7ad9\uff1f\u6b22\u8fce\u544a\u8bc9\u6211\u4eec\u3002/)
+  assert.match(feedbackSource, /\u5f53\u524d\u4e3a\u529f\u80fd\u8bf4\u660e\u9875/)
+  assert.doesNotMatch(feedbackSource, /(?:<form\b|fetch\s*\(|axios\.|XMLHttpRequest|\/api\/|beforeunload|pagehide|visibilitychange|mouseleave|mouseout|exit[-\s]?intent)/i)
 })
 
 test("engage gives both prototype CTAs the shared restrained archive-button treatment", () => {

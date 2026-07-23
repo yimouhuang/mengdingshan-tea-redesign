@@ -102,6 +102,23 @@ export default function EngagePage() {
               >
                 开始问答 / <span lang="en" className="ml-1">Start quiz</span>
               </Link>
+              <div className="mt-5 border-t border-[#d6b45a]/55 pt-4">
+                <h3 className="font-display text-xl leading-tight text-[#f3f0e5]">
+                  共建档案
+                  <span lang="en" className="mt-1 block text-[.68em] font-medium text-[#eee9de]">
+                    Help improve the archive
+                  </span>
+                </h3>
+                <p className="mt-3 leading-[1.6] text-sm text-[#eee9de]/64">
+                  发现资料错误、拥有相关线索，或希望帮助完善本站？欢迎告诉我们。
+                </p>
+                <Link
+                  href="/engage/feedback"
+                  className="mt-4 inline-flex min-h-11 w-fit items-center justify-center rounded-[2px] border border-[#d6b45a] bg-[#060806]/30 px-[18px] text-sm text-[#fff0b4] transition hover:bg-[#d6b45a]/13 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f2d37a] focus-visible:ring-offset-2 focus-visible:ring-offset-[#060806]"
+                >
+                  提交反馈 / <span lang="en" className="ml-1">Share feedback</span>
+                </Link>
+              </div>
             </div>
           </article>
         </div>
