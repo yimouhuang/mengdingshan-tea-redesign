@@ -2,6 +2,8 @@ import Link from "next/link"
 
 import { ArchiveNav } from "@/components/archive-nav"
 
+const archiveFeedbackFormUrl = "https://wj.qq.com/s2/27386962/28be/"
+
 export default function EngageFeedbackPage() {
   return (
     <main className="min-h-screen bg-[#060806] pb-16 text-[#f3f0e5]">
@@ -35,11 +37,22 @@ export default function EngageFeedbackPage() {
 
           <div className="mt-9 border-t border-white/15 pt-6">
             <h2 className="font-display text-2xl leading-tight text-[#f3f0e5]">
-              反馈机制正在准备
+              通过腾讯问卷提交
+              <span lang="en" className="mt-2 block text-[.62em] font-medium text-[#eee9de]">
+                Submit through Tencent Questionnaire
+              </span>
             </h2>
             <p className="mt-3 max-w-2xl leading-[1.65] text-[#eee9de]/64">
-              当前为功能说明页。正式反馈功能将在隐私说明、字段校验与后台审核机制配置完成后开放；提交内容不会公开展示。
+              腾讯问卷将在新标签页中打开。填写内容仅供后台人工审核与必要联系，不会未经审核公开展示；请勿提交身份证号、住址等敏感个人信息。
             </p>
+            <a
+              href={archiveFeedbackFormUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex min-h-11 items-center justify-center rounded-[2px] border border-[#d6b45a] bg-[#060806]/30 px-[18px] text-sm text-[#fff0b4] transition hover:bg-[#d6b45a]/13 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f2d37a] focus-visible:ring-offset-2 focus-visible:ring-offset-[#060806]"
+            >
+              填写共建档案 / <span lang="en" className="ml-1">Fill in questionnaire</span>
+            </a>
           </div>
 
           <Link

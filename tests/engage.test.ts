@@ -77,7 +77,19 @@ test("engage exposes a static archive-contribution route without submission beha
   assert.match(feedbackSource, /ArchiveNav/)
   assert.match(feedbackSource, /\u5171\u5efa\u6863\u6848/)
   assert.match(feedbackSource, /\u53d1\u73b0\u8d44\u6599\u9519\u8bef\u3001\u62e5\u6709\u76f8\u5173\u7ebf\u7d22\uff0c\u6216\u5e0c\u671b\u5e2e\u52a9\u5b8c\u5584\u672c\u7ad9\uff1f\u6b22\u8fce\u544a\u8bc9\u6211\u4eec\u3002/)
-  assert.match(feedbackSource, /\u5f53\u524d\u4e3a\u529f\u80fd\u8bf4\u660e\u9875/)
+  assert.doesNotMatch(feedbackSource, /(?:<form\b|fetch\s*\(|axios\.|XMLHttpRequest|\/api\/|beforeunload|pagehide|visibilitychange|mouseleave|mouseout|exit[-\s]?intent)/i)
+})
+
+test("engage feedback opens the approved Tencent questionnaire without adding site-side submission behavior", () => {
+  const feedbackSource = readFileSync(feedbackPagePath, "utf8")
+
+  assert.match(feedbackSource, /const archiveFeedbackFormUrl = "https:\/\/wj\.qq\.com\/s2\/27386962\/28be\/"/)
+  assert.match(feedbackSource, /href=\{archiveFeedbackFormUrl\}/)
+  assert.match(feedbackSource, /target="_blank"/)
+  assert.match(feedbackSource, /rel="noopener noreferrer"/)
+  assert.match(feedbackSource, /\u901a\u8fc7\u817e\u8baf\u95ee\u5377\u63d0\u4ea4/)
+  assert.match(feedbackSource, /\u817e\u8baf\u95ee\u5377\u5c06\u5728\u65b0\u6807\u7b7e\u9875\u4e2d\u6253\u5f00/)
+  assert.match(feedbackSource, /Fill in questionnaire/)
   assert.doesNotMatch(feedbackSource, /(?:<form\b|fetch\s*\(|axios\.|XMLHttpRequest|\/api\/|beforeunload|pagehide|visibilitychange|mouseleave|mouseout|exit[-\s]?intent)/i)
 })
 
