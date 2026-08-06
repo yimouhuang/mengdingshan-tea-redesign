@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { Geist, Geist_Mono, Inter, Space_Grotesk, Syne } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
 import { AmbientSoundscapeProvider } from "@/components/ambient-soundscape"
 import { StarTrail } from "@/components/star-trail"
 import "./globals.css"
@@ -30,6 +31,7 @@ export default function RootLayout({
           {children}
           <StarTrail />
         </AmbientSoundscapeProvider>
+        <Analytics />
       </body>
     </html>
   )

@@ -11,6 +11,7 @@ const librarySource = readFileSync(
   "utf8"
 )
 const archiveNavSource = readFileSync(resolve(projectRoot, "components/archive-nav.tsx"), "utf8")
+const rootLayoutSource = readFileSync(resolve(projectRoot, "app/layout.tsx"), "utf8")
 const mediaPageSource = readFileSync(
   resolve(projectRoot, "app/media/[slug]/page.tsx"),
   "utf8"
@@ -203,6 +204,11 @@ test("navigation menu button describes its expanded state", () => {
 test("archive navigation renders each configured item as a link", () => {
   assert.doesNotMatch(archiveNavSource, /item\.unavailable/)
   assert.doesNotMatch(archiveNavSource, /item\.availabilityLabel/)
+})
+
+test("root layout mounts Vercel Web Analytics once for every archive route", () => {
+  assert.match(rootLayoutSource, /from "@vercel\/analytics\/next"/)
+  assert.equal((rootLayoutSource.match(/<Analytics \/>/g) ?? []).length, 1)
 })
 
 test("archive surface delegates detail favorite and share actions to the client component", () => {
