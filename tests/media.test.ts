@@ -72,13 +72,31 @@ const expectedPosterPages = {
   "chinese-tea-hospitality": [
     "/media/posters/tea-hospitality-01.png",
     "/media/posters/tea-hospitality-02.png"
+  ],
+  "mengding-tea-origin": [
+    "/media/posters/mengding-tea-origin-01.jpg",
+    "/media/posters/mengding-tea-origin-02.jpg"
+  ],
+  "mengding-overseas-travel-guide": [
+    "/media/posters/mengding-overseas-travel-guide-01.jpg",
+    "/media/posters/mengding-overseas-travel-guide-02.jpg"
   ]
 } as const
 
 const expectedPosterThumbnails = {
   "tea-and-nature-in-harmony": "/media/posters/tea-and-nature-thumb.webp",
   "tea-picking-through-the-solar-terms": "/media/posters/solar-terms-picking-thumb.webp",
-  "chinese-tea-hospitality": "/media/posters/tea-hospitality-thumb.webp"
+  "chinese-tea-hospitality": "/media/posters/tea-hospitality-thumb.webp",
+  "mengding-tea-origin": "/media/posters/mengding-tea-origin-thumb.webp",
+  "mengding-overseas-travel-guide": "/media/posters/mengding-overseas-travel-guide-thumb.webp"
+} as const
+
+const expectedPosterCategories = {
+  "tea-and-nature-in-harmony": "茶文化遗产 / Tea Heritage",
+  "tea-picking-through-the-solar-terms": "茶文化遗产 / Tea Heritage",
+  "chinese-tea-hospitality": "茶文化遗产 / Tea Heritage",
+  "mengding-tea-origin": "茶文化遗产 / Tea Heritage",
+  "mengding-overseas-travel-guide": "景区地标 / Mountain Landmarks"
 } as const
 
 const expectedSlugs = [
@@ -109,7 +127,9 @@ const expectedSlugs = [
   "a-retreat-for-wellbeing-photo",
   "tea-and-nature-in-harmony",
   "tea-picking-through-the-solar-terms",
-  "chinese-tea-hospitality"
+  "chinese-tea-hospitality",
+  "mengding-tea-origin",
+  "mengding-overseas-travel-guide"
 ] as const
 
 const allowedCategories = new Set([
@@ -183,22 +203,36 @@ function getMp4DurationInSeconds(filePath: string): number {
   }
 }
 
-test("media index contains the exact refreshed 28-record public archive", () => {
+test("media index contains the exact refreshed 30-record public archive", () => {
   const slugs = mediaItems.map((item) => item.slug)
   const homeOrders = mediaItems.map((item) => item.homeOrder)
 
-  assert.equal(mediaItems.length, 28)
+  assert.equal(mediaItems.length, 30)
   assert.deepEqual(slugs, expectedSlugs)
-  assert.equal(new Set(homeOrders).size, 28)
+  assert.equal(new Set(homeOrders).size, 30)
   assert.ok(!slugs.includes("origin-of-tea"))
   assert.ok(mediaItems.every((item) => item.titleZh.trim().length > 0))
   assert.ok(mediaItems.every((item) => item.titleEn.trim().length > 0))
 })
 
-test("media index has 20 video, 5 photo, and 3 poster records", () => {
+test("media index has 20 video, 5 photo, and 5 poster records", () => {
   assert.equal(mediaItems.filter((item) => item.kind === "video").length, 20)
   assert.equal(mediaItems.filter((item) => item.kind === "photo").length, 5)
-  assert.equal(mediaItems.filter((item) => item.kind === "poster").length, 3)
+  assert.equal(mediaItems.filter((item) => item.kind === "poster").length, 5)
+})
+
+test("new poster records preserve their approved bilingual titles", () => {
+  const teaOrigin = mediaItems.find((item) => item.slug === "mengding-tea-origin")
+  const travelGuide = mediaItems.find(
+    (item) => item.slug === "mengding-overseas-travel-guide"
+  )
+
+  assert.ok(teaOrigin)
+  assert.equal(teaOrigin.titleZh, "蒙顶茶起源")
+  assert.equal(teaOrigin.titleEn, "The Origin of Mengding Tea")
+  assert.ok(travelGuide)
+  assert.equal(travelGuide.titleZh, "蒙顶山海外游客旅行指南")
+  assert.equal(travelGuide.titleEn, "Mengding Mountain Travel Guide for Overseas Visitors")
 })
 
 test("one leaf two millennia has the approved bilingual Vlog metadata", () => {
@@ -261,6 +295,10 @@ test("every record uses an approved bilingual category and reviewed rights", () 
   )
 })
 
+test("every record uses the unified capture date", () => {
+  assert.ok(mediaItems.every((item) => item.captureDate === "2026-06-13"))
+})
+
 test("the refreshed catalog uses the exact approved local assets", () => {
   const videos = mediaItems.filter((item) => item.kind === "video")
   const photos = mediaItems.filter((item) => item.kind === "photo")
@@ -288,8 +326,10 @@ test("poster records expose their exact full-resolution page sets", () => {
 
   for (const item of posters) {
     const slug = item.slug as keyof typeof expectedPosterPages
-    assert.equal(item.categoryZh, "茶文化遗产")
-    assert.equal(item.categoryEn, "Tea Heritage")
+    assert.equal(
+      `${item.categoryZh} / ${item.categoryEn}`,
+      expectedPosterCategories[slug]
+    )
     assert.equal(getLocalMediaPath(item.poster), expectedPosterThumbnails[slug])
     assert.deepEqual(item.pages.map(getLocalMediaPath), expectedPosterPages[slug])
     assert.equal(item.assetCount, item.pages.length)
@@ -355,7 +395,7 @@ test("every catalog path resolves to a local public file", () => {
       assert.ok(posterPath.endsWith(".webp"))
       for (const page of item.pages) {
         const pagePath = getLocalMediaPath(page)
-        assert.ok(pagePath.endsWith(".png"))
+        assert.match(pagePath, /\.(?:png|jpg)$/)
         assert.ok(existsSync(resolve(publicDirectory, pagePath.slice(1))))
       }
     }

@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
+import { AmbientSoundscapeControl } from "@/components/ambient-soundscape"
 import {
   archiveNavItems,
   isArchiveNavItemActive
@@ -49,6 +50,7 @@ export function ArchiveNav() {
         </div>
         <div className="archive-actions">
           <Link href="/library" className="archive-icon" aria-label="Search archive">⌕</Link>
+          <AmbientSoundscapeControl />
           <span className="archive-language">中文 / EN</span>
           <button
             className="archive-menu"

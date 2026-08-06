@@ -15,6 +15,10 @@ const mediaPageSource = readFileSync(
   resolve(projectRoot, "app/media/[slug]/page.tsx"),
   "utf8"
 )
+const archiveVideoSource = readFileSync(
+  resolve(projectRoot, "components/archive-video.tsx"),
+  "utf8"
+)
 const mediaActionsSource = readFileSync(
   resolve(projectRoot, "components/media-actions.tsx"),
   "utf8"
@@ -136,7 +140,8 @@ test("library browser remains poster-only", () => {
 
 test("media detail keeps dedicated video, photo, and poster render paths", () => {
   assert.match(mediaPageSource, /item\.kind === "video"/)
-  assert.match(mediaPageSource, /<video[\s\S]*?<source/)
+  assert.match(mediaPageSource, /<ArchiveVideo[\s\S]*?source=\{item\.video\}/)
+  assert.match(archiveVideoSource, /<video[\s\S]*?<source/)
   assert.match(mediaPageSource, /item\.kind === "poster"/)
   assert.match(mediaPageSource, /relative aspect-video[\s\S]*?className="object-contain"/)
 })

@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArchiveNav } from "@/components/archive-nav"
+import { ArchiveVideo } from "@/components/archive-video"
 import { MediaLibraryBackLink } from "@/components/media-library-back-link"
 import { MediaActions } from "@/components/media-actions"
 import { getMediaItem, getMediaNeighbors, getRelatedMedia, mediaItems } from "@/lib/media"
@@ -34,16 +35,11 @@ export default async function MediaPage({ params }: Props) {
         <div className="grid gap-5 xl:grid-cols-[minmax(0,1.75fr)_430px]">
           <div className="overflow-hidden rounded-2xl border border-white/15 bg-black">
             {item.kind === "video" ? (
-              <video
-                controls
-                playsInline
-                preload="metadata"
+              <ArchiveVideo
+                source={item.video}
                 poster={item.poster}
                 className="aspect-video w-full object-contain"
-              >
-                <source src={item.video} type="video/mp4" />
-                你的浏览器不支持视频播放。
-              </video>
+              />
             ) : item.kind === "poster" ? (
               <div className={`grid gap-3 p-3 ${item.pages.length === 1 ? "mx-auto max-w-2xl" : "md:grid-cols-2"}`}>
                 {item.pages.map((page, index) => (

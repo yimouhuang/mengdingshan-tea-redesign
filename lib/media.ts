@@ -133,7 +133,7 @@ function createVideo(seed: VideoSeed): VideoMedia {
     archiveId: `MDS-VD-${assetId.toUpperCase()}`,
     duration,
     assetCount: 1,
-    captureDate: dateNotSpecified,
+    captureDate: "2026-06-13",
     photographer: archiveCollection,
     rights: rightsReviewed,
     featured: featuredHomeOrderBySlug.has(item.slug)
@@ -152,7 +152,7 @@ function createPhoto(seed: PhotoSeed): PhotoMedia {
     poster: resolveMediaUrl(`/media/photos/${assetName}`),
     signal: `${item.categoryZh} / ${item.categoryEn}`,
     assetCount: 1,
-    captureDate: dateNotSpecified,
+    captureDate: "2026-06-13",
     photographer: archiveCollection,
     rights: rightsReviewed,
     featured: featuredHomeOrderBySlug.has(item.slug)
@@ -173,7 +173,7 @@ function createPoster(seed: PosterSeed): PosterMedia {
     signal: `${item.categoryZh} / ${item.categoryEn}`,
     archiveId: `MDS-PO-${assetId.toUpperCase()}`,
     assetCount: pages.length,
-    captureDate: dateNotSpecified,
+    captureDate: "2026-06-13",
     photographer: archiveCollection,
     rights: rightsReviewed,
     featured: featuredHomeOrderBySlug.has(item.slug)
@@ -573,6 +573,39 @@ const seededMediaItems: TeaMedia[] = [
     descriptionEn: "Two poster pages introduce Chinese tea etiquette and hospitality.",
     tags: ["茶礼", "Tea hospitality", "Poster"],
     homeOrder: 33,
+    aspect: "3:4"
+  }),
+  createPoster({
+    assetId: "mengding-tea-origin",
+    pages: ["mengding-tea-origin-01.jpg", "mengding-tea-origin-02.jpg"],
+    slug: "mengding-tea-origin",
+    titleZh: "蒙顶茶起源",
+    titleEn: "The Origin of Mengding Tea",
+    categoryZh: categories.heritage.zh,
+    categoryEn: categories.heritage.en,
+    descriptionZh: "两页海报回顾吴理真、祭祀天地、蒙顶甘露和蒙顶黄芽，呈现蒙顶茶的历史源流。",
+    descriptionEn:
+      "Two poster pages revisit Wu Lizhen, the ritual of offering to Heaven and Earth, Mengding Ganlu, and Mengding Huangya, presenting the historical origins of Mengding tea.",
+    tags: ["蒙顶茶起源", "Tea origin", "Poster"],
+    homeOrder: 34,
+    aspect: "3:4"
+  }),
+  createPoster({
+    assetId: "mengding-overseas-travel-guide",
+    pages: [
+      "mengding-overseas-travel-guide-01.jpg",
+      "mengding-overseas-travel-guide-02.jpg"
+    ],
+    slug: "mengding-overseas-travel-guide",
+    titleZh: "蒙顶山海外游客旅行指南",
+    titleEn: "Mengding Mountain Travel Guide for Overseas Visitors",
+    categoryZh: categories.landmarks.zh,
+    categoryEn: categories.landmarks.en,
+    descriptionZh: "两页海报面向海外游客介绍蒙顶山茶文化旅行线索，包括御茶园、天盖寺与天梯古道等。",
+    descriptionEn:
+      "Two poster pages introduce overseas visitors to travel threads around Mengding Mountain's tea culture, including the Imperial Tea Garden, Tiangai Temple, and the Heavenly Ladder Ancient Path.",
+    tags: ["海外游客", "Travel guide", "Poster"],
+    homeOrder: 35,
     aspect: "3:4"
   })
 ]

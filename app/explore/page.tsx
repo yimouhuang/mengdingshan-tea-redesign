@@ -32,10 +32,9 @@ export default function ExplorePage() {
               探索蒙顶山 / Explore Mengding Mountain
             </h1>
             <p className="mt-4 max-w-3xl leading-7 text-[#eee9de]/78">
-              交互地图提供蒙顶山周边的整体地域语境；它不是游览路线，也不标示影像的精确拍摄地点。
+              交互地图提供蒙顶山周边的整体地域语境。
               <span className="mt-1 block">
-                The interactive map provides general regional context for Mengding Mountain; it is not a
-                route and does not claim exact locations for archive media.
+                The interactive map provides general regional context for Mengding Mountain.
               </span>
             </p>
           </div>

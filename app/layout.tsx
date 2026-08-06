@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { Geist, Geist_Mono, Inter, Space_Grotesk, Syne } from "next/font/google"
+import { AmbientSoundscapeProvider } from "@/components/ambient-soundscape"
 import { StarTrail } from "@/components/star-trail"
 import "./globals.css"
 import "maplibre-gl/dist/maplibre-gl.css"
@@ -25,8 +26,10 @@ export default function RootLayout({
       <body
         className={`${geist.variable} ${geistMono.variable} ${inter.variable} ${spaceGrotesk.variable} ${syne.variable} font-sans antialiased`}
       >
-        {children}
-        <StarTrail />
+        <AmbientSoundscapeProvider>
+          {children}
+          <StarTrail />
+        </AmbientSoundscapeProvider>
       </body>
     </html>
   )

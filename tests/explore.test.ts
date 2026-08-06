@@ -20,7 +20,15 @@ test("explore page composes the map with poster-only archive media", () => {
   assert.match(source, /tea-ancestor-relief/)
   assert.match(source, /Browse media/)
   assert.match(source, /src=\{item\.poster\}/)
-  assert.match(source, /general regional context/)
+  assert.match(source, /交互地图提供蒙顶山周边的整体地域语境。/)
+  assert.match(
+    source,
+    /The interactive map provides general regional context for Mengding Mountain\./
+  )
+  assert.doesNotMatch(source, /不是游览路线/)
+  assert.doesNotMatch(source, /精确拍摄地点/)
+  assert.doesNotMatch(source, /not a route/)
+  assert.doesNotMatch(source, /exact locations for archive media/)
   assert.doesNotMatch(source, /\bpriority\b/)
   assert.match(source, /<div className="mt-8">\s*<ExploreMapShell \/>\s*<\/div>/)
   assert.match(source.slice(source.indexOf("{exploreMedia.map")), /alt=""/)
